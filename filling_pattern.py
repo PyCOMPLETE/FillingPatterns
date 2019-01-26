@@ -1,0 +1,107 @@
+
+import numpy as np
+
+
+class Filling_Pattern_Single_Beam(object):
+
+    def __init__(self, pattern, ring_length_slots = 3564, 
+            min_MKI_slots = 31, min_MKP_slots = 7, agap_first_slot = 3443):
+
+        agap_length = ring_length_slots - agap_first_slot
+        pattern = np.array(pattern)
+
+        # Identify trains
+        ddd = np.diff(pattern)
+        start_trains = np.where(ddd==1)[0]+1
+        end_trains = np.where(ddd==-1)[0]+1
+        if end_trains[0]<start_trains[0]:
+            start_trains = np.array([0] + list(start_trains))
+
+        # Remove gaps that need to be generated in the PS
+        tobekept = (start_trains[1:] - end_trains[:-1]) >= min_MKP_slots
+        start_trains = np.array([start_trains[0]] + list(start_trains[1:][tobekept]))
+        end_trains =  np.array(list(end_trains[:-1][tobekept]) + [end_trains[-1]])
+
+        # Lenghts of trains and gaps
+        train_lengths = end_trains - start_trains
+        gap_lengths =  start_trains[1:] - end_trains[:-1]
+        train_nbunches = np.array([np.sum(pattern[start_trains[ii]:end_trains[ii]]) for ii in \
+                            range(len(start_trains))])
+
+        i_train_first = np.array([0] + list(np.where(gap_lengths>=min_MKI_slots)[0]+1))
+        inj_slots = start_trains[i_train_first]
+        n_injections = len(inj_slots)
+
+        #Find pattern for individual injections
+        inj_patterns = []
+        inj_compositions = []
+        for ii, _ in enumerate(i_train_first):
+
+            i_start = inj_slots[ii]
+
+            if ii+1 == n_injections:
+                inj_composition = train_nbunches[i_train_first[ii]:-1]
+                i_end = -1
+            else:
+                inj_composition = train_nbunches[i_train_first[ii]:i_train_first[ii+1]]
+                i_end = inj_slots[ii+1]
+
+            inj_pattern = pattern[i_start:i_end]
+            # Cut away zeros at the end
+            inj_last_filled = np.max(np.where(inj_pattern==1)[0])
+            inj_pattern = inj_pattern[:inj_last_filled+1]
+
+            inj_patterns.append(inj_pattern)
+            inj_compositions.append(inj_composition)
+
+        # Identify injection types
+        inj_pattern_types = []
+        inj_composition_types = []
+        for patt, comp in zip(inj_patterns, inj_compositions):
+            found = False
+            for patt_type in inj_pattern_types:
+                if len(patt_type) == len(patt): 
+                    if np.sum(patt_type-patt)==0:
+                        found = True
+                        break
+            if not found:
+                inj_pattern_types.append(patt)
+                inj_composition_types.append(comp)
+
+        # Unused space
+        needed_nslots = (n_injections-1)*min_MKI_slots \
+                        + np.sum(map(len, inj_patterns)) + agap_length
+        inefficiency_perc = 100*(1 - float(needed_nslots) / float(ring_length_slots))
+
+
+        self.pattern = pattern
+        self.n_bunches = np.sum(pattern)
+
+        self.train_lengths =  train_lengths
+        self.gap_lengths = gap_lengths
+        self.train_nbunches = train_nbunches
+
+        self.inj_slots = inj_slots
+        self.n_injections = n_injections
+
+        self.inj_patterns = inj_patterns
+        self.inj_compositions = inj_compositions
+
+        self.inj_pattern_types = inj_pattern_types
+        self.inj_composition_types = inj_composition_types
+
+        self.n_unused_slots = ring_length_slots - needed_nslots
+        self.inefficiency_perc = inefficiency_perc
+
+
+class Filling_Pattern(object):
+
+    def __init__(self, pattern_b1, pattern_b2, ring_length_slots = 3564, 
+            min_MKI_slots = 31, min_MKP_slots = 7, agap_first_slot = 3443):
+
+        self.b1 = Filling_Pattern_Single_Beam(pattern_b1, ring_length_slots,
+            min_MKI_slots, min_MKP_slots, agap_first_slot)
+
+        self.b2 = Filling_Pattern_Single_Beam(pattern_b2, ring_length_slots,
+            min_MKI_slots, min_MKP_slots, agap_first_slot)
+
