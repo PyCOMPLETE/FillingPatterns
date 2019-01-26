@@ -10,6 +10,11 @@ class Filling_Pattern_Single_Beam(object):
         agap_length = ring_length_slots - agap_first_slot
         pattern = np.array(pattern)
 
+        assert(len(pattern)<=ring_length_slots)
+
+        # Add empty slots at the end if needed
+        pattern = np.array(list(pattern) + (ring_length_slots-len(pattern))*[0])
+
         # Identify trains
         ddd = np.diff(pattern)
         start_trains = np.where(ddd==1)[0]+1
@@ -105,3 +110,9 @@ class Filling_Pattern(object):
         self.b2 = Filling_Pattern_Single_Beam(pattern_b2, ring_length_slots,
             min_MKI_slots, min_MKP_slots, agap_first_slot)
 
+        self.n_coll_ATLAS = np.sum(self.b1.pattern*self.b2.pattern)
+        self.n_coll_CMS = self.n_coll_ATLAS
+        self.n_coll_ALICE = np.sum(self.b2.pattern * \
+                                np.roll(self.b1.pattern, 891))
+        self.n_coll_LHCb = np.sum(self.b1.pattern * \
+                                np.roll(self.b2.pattern, 894))
