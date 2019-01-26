@@ -1,5 +1,5 @@
 import json
-import matplotlib.pyplot as pl
+import matplotlib.pyplot as plt
 import numpy as np
 
 import mystyle as ms
@@ -13,6 +13,13 @@ scheme_fnames = [
 '25ns_2744b_2736_2242_2370_240bpi_13inj_800ns_bs200ns_5x48.json',
 '25ns_2748b_2736_2258_2378_288bpi_12inj_800ns_bs200ns_6x48.json',
 ]
+
+plt.close('all')
+ms.mystyle_arial(fontsz=14, dist_tick_lab=5)
+fig1 = plt.figure(1, figsize=(1.5*8, .8*6))
+fig1.set_facecolor('w')
+
+
 
 for fname in scheme_fnames:
     with open(fname, 'r') as fid:
@@ -31,3 +38,37 @@ for fname in scheme_fnames:
     print('N_unused = \t%d (%.1f'%(patt.b1.n_unused_slots,
             patt.b1.inefficiency_perc)+' %)')
     print('Injection types = %s'%repr(map(list, patt.b1.inj_composition_types)))
+    print('Injection len: %s'%repr(map(len, patt.b1.inj_pattern_types)))
+
+
+    fig1.clear()
+    ax = plt.subplot2grid(shape=(3,2), loc=(0,0), 
+            rowspan=1, colspan=2, fig=fig1)
+    x_pattern = np.arange(0, len(patt.b1.pattern), 0.1)
+    y_pattern = 0.*x_pattern
+
+    axinj_list = [
+        plt.subplot2grid(shape=(3,2), loc=(1,0), 
+            rowspan=1, colspan=1, fig=fig1),
+        plt.subplot2grid(shape=(3,2), loc=(2,0), 
+            rowspan=1, colspan=1, fig=fig1),
+        plt.subplot2grid(shape=(3,2), loc=(1,1), 
+            rowspan=1, colspan=1, fig=fig1),
+        plt.subplot2grid(shape=(3,2), loc=(2,1), 
+            rowspan=1, colspan=1, fig=fig1),
+        ]
+
+    for ii, filled in enumerate(patt.b1.pattern):
+        if filled>0.5:
+            y_pattern[np.logical_and(x_pattern>=ii, x_pattern<(ii+1))] = 1.
+
+    ax.fill_between(x = x_pattern, y1=y_pattern, alpha=0.5, linewidth=0., edgecolor='k')
+    ax.set_ylim(0, 1.2)
+    ax.set_yticks([])
+    fig1.subplots_adjust(left=.03, right=.97, bottom=.12, top=.9, hspace=.5)
+    ax.set_xlim(0, 3564)
+    fig1.suptitle(fname.split('.')[0])
+
+    
+
+plt.show()

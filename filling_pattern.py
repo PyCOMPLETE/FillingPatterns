@@ -45,13 +45,13 @@ class Filling_Pattern_Single_Beam(object):
             i_start = inj_slots[ii]
 
             if ii+1 == n_injections:
-                inj_composition = train_nbunches[i_train_first[ii]:-1]
-                i_end = -1
+                inj_composition = train_nbunches[i_train_first[ii]:]
+                nj_pattern = pattern[i_start:]
             else:
                 inj_composition = train_nbunches[i_train_first[ii]:i_train_first[ii+1]]
                 i_end = inj_slots[ii+1]
+                inj_pattern = pattern[i_start:i_end]
 
-            inj_pattern = pattern[i_start:i_end]
             # Cut away zeros at the end
             inj_last_filled = np.max(np.where(inj_pattern==1)[0])
             inj_pattern = inj_pattern[:inj_last_filled+1]
@@ -91,9 +91,11 @@ class Filling_Pattern_Single_Beam(object):
 
         self.inj_patterns = inj_patterns
         self.inj_compositions = inj_compositions
+        self.inj_nbun = np.array(map(np.sum, inj_compositions))
 
         self.inj_pattern_types = inj_pattern_types
         self.inj_composition_types = inj_composition_types
+        self.inj_nbun_types = np.array(map(np.sum, inj_composition_types))
 
         self.n_unused_slots = ring_length_slots - needed_nslots
         self.inefficiency_perc = inefficiency_perc

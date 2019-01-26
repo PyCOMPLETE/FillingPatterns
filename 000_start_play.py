@@ -73,7 +73,7 @@ for ii, _ in enumerate(i_train_first):
 	i_start = inj_slots[ii]
 
 	if ii+1 == n_injections:
-		inj_composition = train_nbunches[i_train_first[ii]:-1]
+		inj_composition = train_nbunches[i_train_first[ii]:]
 		i_end = -1
 	else:
 		inj_composition = train_nbunches[i_train_first[ii]:i_train_first[ii+1]]
