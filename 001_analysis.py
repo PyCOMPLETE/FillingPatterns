@@ -44,9 +44,7 @@ for fname in scheme_fnames:
     fig1.clear()
     ax = plt.subplot2grid(shape=(3,2), loc=(0,0), 
             rowspan=1, colspan=2, fig=fig1)
-    x_pattern = np.arange(0, len(patt.b1.pattern), 0.1)
-    y_pattern = 0.*x_pattern
-
+    
     axinj_list = [
         plt.subplot2grid(shape=(3,2), loc=(1,0), 
             rowspan=1, colspan=1, fig=fig1),
@@ -58,6 +56,8 @@ for fname in scheme_fnames:
             rowspan=1, colspan=1, fig=fig1),
         ]
 
+    x_pattern = np.arange(0, len(patt.b1.pattern), 0.1)
+    y_pattern = 0.*x_pattern
     for ii, filled in enumerate(patt.b1.pattern):
         if filled>0.5:
             y_pattern[np.logical_and(x_pattern>=ii, x_pattern<(ii+1))] = 1.
@@ -65,10 +65,30 @@ for fname in scheme_fnames:
     ax.fill_between(x = x_pattern, y1=y_pattern, alpha=0.5, linewidth=0., edgecolor='k')
     ax.set_ylim(0, 1.2)
     ax.set_yticks([])
-    fig1.subplots_adjust(left=.03, right=.97, bottom=.12, top=.9, hspace=.5)
     ax.set_xlim(0, 3564)
-    fig1.suptitle(fname.split('.')[0])
 
-    
+    fig1.suptitle(fname.split('.')[0])
+    fig1.subplots_adjust(left=.03, right=.97, bottom=.12, top=.9, hspace=.5)
+
+    for i_plot, i_inj in enumerate(np.argsort(patt.b1.inj_nbun_types)[::-1]):
+        
+        this_patt = patt.b1.inj_pattern_types[i_inj]
+        thisax = axinj_list[i_plot]
+
+        x_pattern = np.arange(0, len(this_patt), 0.1)
+        y_pattern = 0.*x_pattern
+        for ii, filled in enumerate(this_patt):
+            if filled>0.5:
+                y_pattern[np.logical_and(x_pattern>=ii, 
+                            x_pattern<(ii+1))] = 1.
+
+        thisax.fill_between(x = x_pattern, y1=y_pattern, 
+                    alpha=0.5, linewidth=0., edgecolor='k')
+        thisax.set_ylim(0, 1.2)
+        thisax.set_yticks([])
+        thisax.set_xlim(-10, 350)
+
+    fig1.savefig(fname.split('.')[0]+'.png', dpi=200)
+
 
 plt.show()
