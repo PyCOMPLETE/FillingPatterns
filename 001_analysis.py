@@ -5,6 +5,7 @@ import numpy as np
 import mystyle as ms
 import filling_pattern as fp
 
+study_name = 'comparison_25ns'
 scheme_fnames = [
 '25ns_2760b_2748_2495_2560_288bpi_14inj_800ns_bs200ns_STD.json',
 '25ns_2844b_2832_2560_2631_288bpi_15inj_800ns_bs200ns_4x72_opt.json',
@@ -19,7 +20,18 @@ ms.mystyle_arial(fontsz=14, dist_tick_lab=5)
 fig1 = plt.figure(1, figsize=(1.5*8, .8*6))
 fig1.set_facecolor('w')
 
-
+with open(study_name+'.tsv', 'w') as fid:
+    fid.write('\t'.join([
+        'Scheme name',
+        'N_bunches',
+        'N_coll_ATLAS',
+        'N_coll_LHCb',
+        'N_coll_ALICE', 
+        'N_inj',
+        'N_unused',
+        'Injection types',
+        'Injection len',
+        ])+'\n')
 
 for fname in scheme_fnames:
     with open(fname, 'r') as fid:
@@ -40,6 +52,18 @@ for fname in scheme_fnames:
     print('Injection types = %s'%repr(map(list, patt.b1.inj_composition_types)))
     print('Injection len: %s'%repr(map(len, patt.b1.inj_pattern_types)))
 
+    with open(study_name+'.tsv', 'a') as fid:
+        fid.write('\t'.join([
+            fname.split('.')[0],
+            '%d'%patt.b1.n_bunches,
+            '%d'%patt.n_coll_ATLAS,
+            '%d'%patt.n_coll_LHCb,
+            '%d'%patt.n_coll_ALICE, 
+            '%d'%(patt.b1.n_injections),
+            '%d'%(patt.b1.n_unused_slots),
+            repr(map(list, patt.b1.inj_composition_types)),
+            repr(map(len, patt.b1.inj_pattern_types)),
+            ])+'\n')
 
     fig1.clear()
     ax = plt.subplot2grid(shape=(3,2), loc=(0,0), 
