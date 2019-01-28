@@ -41,15 +41,18 @@ for fname in scheme_fnames:
                     pattern_b2 = data['beam2'])
 
     print('\n____________________\n')
-    print(fname.split('.')[0])
-    print('N_bunches = \t%d'%patt.b1.n_bunches)
-    print('N_coll_ATLAS = \t%d'%patt.n_coll_ATLAS)
-    print('N_coll_LHCb = \t%d'%patt.n_coll_LHCb)
-    print('N_coll_ALICE = \t%d'%patt.n_coll_ALICE)
-    print('N_inj = \t%d'%(patt.b1.n_injections))
-    print('N_unused = \t%d (%.1f'%(patt.b1.n_unused_slots,
-            patt.b1.inefficiency_perc)+' %)')
-    print('Injection types = %s'%repr(map(list, patt.b1.inj_composition_types)))
+    print('Scheme name: '+fname.split('.')[0])
+
+    print('\n   N. collisions')
+    print('ATLAS/CMS:     %d'%patt.n_coll_ATLAS)
+    print('LHCb:          %d'%patt.n_coll_LHCb)
+    print('ALICE:         %d'%patt.n_coll_ALICE)
+
+    print('\nN. bunches:    %d'%patt.b1.n_bunches)
+    print('\nN. injections:  %d'%(patt.b1.n_injections))
+    print('\nUnused:   %d slots'%(patt.b1.n_unused_slots))
+    print('          (%.1f'%patt.b1.inefficiency_perc+' % LHC)')
+    print('\nInjection types = %s'%repr(map(list, patt.b1.inj_composition_types)))
     print('Injection len: %s'%repr(map(len, patt.b1.inj_pattern_types)))
 
     with open(study_name+'.tsv', 'a') as fid:
