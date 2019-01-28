@@ -13,6 +13,8 @@ scheme_fnames = [
 '25ns_2904b_2896_2656_2734_320bpi_12inj_800ns_bs200ns_4x80b_opt.json',
 '25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_5x48b_opt.json',
 '25ns_2748b_2736_2258_2378_288bpi_12inj_800ns_bs200ns_6x48.json',
+'25ns_2372b_2360_1784_2216_256bpi_12inj_800ns_bs200ns_run3study.json',
+'25ns_2492b_2480_2048_2301_240bpi_13inj_800ns_bs200ns_run3_study_corrected.json'
 ]
 
 plt.close('all')
@@ -122,6 +124,9 @@ for ifname, fname in enumerate(scheme_fnames):
         thisax.set_yticks([])
         thisax.set_xlim(-10, 350)
         thisax.set_xlabel('25 ns slot')
+
+        if i_plot == 3:
+            break
 
     fig1.savefig(fname.split('.')[0]+'.png', dpi=200)
 
