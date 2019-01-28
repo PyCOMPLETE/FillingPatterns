@@ -10,14 +10,14 @@ scheme_fnames = [
 '25ns_2760b_2748_2495_2560_288bpi_14inj_800ns_bs200ns_STD.json',
 '25ns_2844b_2832_2560_2631_288bpi_15inj_800ns_bs200ns_4x72_opt.json',
 '25ns_2808b_2800_2618_2658_320bpi_14inj_800ns_bs200ns_4x80.json',
-'25ns_2880b_2872_2673_2688_320bpi_12inj_800ns_bs200ns_4x80_opt.json',
+'25ns_2904b_2896_2656_2734_320bpi_12inj_800ns_bs200ns_4x80b_opt.json',
 '25ns_2744b_2736_2242_2370_240bpi_13inj_800ns_bs200ns_5x48.json',
 '25ns_2748b_2736_2258_2378_288bpi_12inj_800ns_bs200ns_6x48.json',
 ]
 
 plt.close('all')
-ms.mystyle_arial(fontsz=14, dist_tick_lab=5)
-fig1 = plt.figure(1, figsize=(1.5*8, .8*6))
+ms.mystyle_arial(fontsz=14, dist_tick_lab=4)
+fig1 = plt.figure(1, figsize=(1.5*8, .9*6))
 fig1.set_facecolor('w')
 
 with open(study_name+'.tsv', 'w') as fid:
@@ -90,9 +90,10 @@ for fname in scheme_fnames:
     ax.set_ylim(0, 1.2)
     ax.set_yticks([])
     ax.set_xlim(0, 3564)
+    ax.set_xlabel('25 ns slot')
 
     fig1.suptitle(fname.split('.')[0])
-    fig1.subplots_adjust(left=.03, right=.97, bottom=.12, top=.9, hspace=.5)
+    fig1.subplots_adjust(left=.03, right=.97, bottom=.12, top=.9, hspace=.8)
 
     for i_plot, i_inj in enumerate(np.argsort(patt.b1.inj_nbun_types)[::-1]):
         
@@ -111,6 +112,7 @@ for fname in scheme_fnames:
         thisax.set_ylim(0, 1.2)
         thisax.set_yticks([])
         thisax.set_xlim(-10, 350)
+        thisax.set_xlabel('25 ns slot')
 
     fig1.savefig(fname.split('.')[0]+'.png', dpi=200)
 
