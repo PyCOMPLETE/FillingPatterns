@@ -11,7 +11,7 @@ scheme_fnames = [
 '25ns_2844b_2832_2560_2631_288bpi_15inj_800ns_bs200ns_4x72_opt.json',
 '25ns_2808b_2800_2618_2658_320bpi_14inj_800ns_bs200ns_4x80.json',
 '25ns_2904b_2896_2656_2734_320bpi_12inj_800ns_bs200ns_4x80b_opt.json',
-'25ns_2744b_2736_2242_2370_240bpi_13inj_800ns_bs200ns_5x48.json',
+'25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_5x48b_opt.json',
 '25ns_2748b_2736_2258_2378_288bpi_12inj_800ns_bs200ns_6x48.json',
 ]
 
@@ -33,25 +33,31 @@ with open(study_name+'.tsv', 'w') as fid:
         'Injection len',
         ])+'\n')
 
-for fname in scheme_fnames:
+for ifname, fname in enumerate(scheme_fnames):
     with open(fname, 'r') as fid:
         data = json.load(fid)
 
     patt = fp.Filling_Pattern(pattern_b1 = data['beam1'], 
                     pattern_b2 = data['beam2'])
 
+    if ifname == 0:
+        ref_ATLAS = patt.n_coll_ATLAS
+        ref_LHCb = patt.n_coll_LHCb
+        ref_ALICE = patt.n_coll_ALICE 
+
+
     print('\n____________________\n')
     print('Scheme name: '+fname.split('.')[0])
 
     print('\n   N. collisions')
-    print('ATLAS/CMS:     %d'%patt.n_coll_ATLAS)
-    print('LHCb:          %d'%patt.n_coll_LHCb)
-    print('ALICE:         %d'%patt.n_coll_ALICE)
+    print('ATLAS/CMS:     %d (%+.1f'%(patt.n_coll_ATLAS, 100*(float(patt.n_coll_ATLAS)/ref_ATLAS-1.))+'%)')
+    print('LHCb:          %d (%+.1f'%(patt.n_coll_LHCb, 100*(float(patt.n_coll_LHCb)/ref_LHCb-1.))+'%)')
+    print('ALICE:         %d (%+.1f'%(patt.n_coll_ALICE, 100*(float(patt.n_coll_ALICE)/ref_ALICE-1.))+'%)')
 
     print('\nN. bunches:    %d'%patt.b1.n_bunches)
-    print('\nN. injections:  %d'%(patt.b1.n_injections))
-    print('\nUnused:   %d slots'%(patt.b1.n_unused_slots))
-    print('          (%.1f'%patt.b1.inefficiency_perc+' % LHC)')
+    print('\nN. injections: %d'%(patt.b1.n_injections))
+    print('\nUnused:        %d slots'%(patt.b1.n_unused_slots))
+    print('               (%.1f'%patt.b1.inefficiency_perc+'% LHC)')
     print('\nInjection types = %s'%repr(map(list, patt.b1.inj_composition_types)))
     print('Injection len: %s'%repr(map(len, patt.b1.inj_pattern_types)))
 
