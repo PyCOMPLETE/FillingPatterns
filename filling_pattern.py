@@ -108,6 +108,21 @@ class Filling_Pattern_Single_Beam(object):
         self.injection_number = injection_number
         self.slot_within_injection = slot_within_injection
 
+    def belongs_to_group(self, places_within_injection=None, 
+            n_bunches_in_injection=None):
+        
+        mask = self.pattern>0
+
+        # Check for nbun in injection
+        if n_bunches_in_injection is not None:
+            nbun_my_inj = np.take(self.inj_nbun, self.injection_number)
+            nbun_my_inj[self.injection_number==-1]=-1
+            mask = np.logical_and(mask, nbun_my_inj == n_bunches_in_injection)
+
+        return mask
+
+
+
 class Filling_Pattern(object):
 
     def __init__(self, pattern_b1, pattern_b2, ring_length_slots = 3564, 
