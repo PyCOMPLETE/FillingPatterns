@@ -40,13 +40,15 @@ class Filling_Pattern_Single_Beam(object):
         #Find pattern for individual injections
         inj_patterns = []
         inj_compositions = []
+        injection_number = 0*pattern - 1
+        slot_within_injection = 0*pattern - 1 
         for ii, _ in enumerate(i_train_first):
 
             i_start = inj_slots[ii]
 
             if ii+1 == n_injections:
                 inj_composition = train_nbunches[i_train_first[ii]:]
-                nj_pattern = pattern[i_start:]
+                inj_pattern = pattern[i_start:]
             else:
                 inj_composition = train_nbunches[i_train_first[ii]:i_train_first[ii+1]]
                 i_end = inj_slots[ii+1]
@@ -55,6 +57,9 @@ class Filling_Pattern_Single_Beam(object):
             # Cut away zeros at the end
             inj_last_filled = np.max(np.where(inj_pattern==1)[0])
             inj_pattern = inj_pattern[:inj_last_filled+1]
+            inj_len = len(inj_pattern)
+            injection_number[i_start:i_start+inj_len] = ii
+            slot_within_injection[i_start:i_start+inj_len] = np.arange(inj_len) 
 
             inj_patterns.append(inj_pattern)
             inj_compositions.append(inj_composition)
@@ -100,6 +105,8 @@ class Filling_Pattern_Single_Beam(object):
         self.n_unused_slots = ring_length_slots - needed_nslots
         self.inefficiency_perc = inefficiency_perc
 
+        self.injection_number = injection_number
+        self.slot_within_injection = slot_within_injection
 
 class Filling_Pattern(object):
 
