@@ -108,7 +108,7 @@ class Filling_Pattern_Single_Beam(object):
         self.injection_number = injection_number
         self.slot_within_injection = slot_within_injection
 
-    def belongs_to_group(self, places_within_injection=None, 
+    def belongs_to_group(self, slots_within_injection=None, 
             n_bunches_in_injection=None):
         
         mask = self.pattern>0
@@ -118,6 +118,10 @@ class Filling_Pattern_Single_Beam(object):
             nbun_my_inj = np.take(self.inj_nbun, self.injection_number)
             nbun_my_inj[self.injection_number==-1]=-1
             mask = np.logical_and(mask, nbun_my_inj == n_bunches_in_injection)
+
+        if slots_within_injection is not None:
+            mask = np.logical_and(mask, np.array(
+                [(ss in slots_within_injection) for ss in self.slot_within_injection]))
 
         return mask
 
