@@ -2,7 +2,7 @@ import json
 import matplotlib.pyplot as pl
 import numpy as np
 
-import mystyle as ms
+from . import mystyle as ms
 
 scheme_fname = '25ns_2880b_2872_2673_2688_320bpi_12inj_800ns_bs200ns_4x80_opt.json'
 scheme_fname = 'example_mixed.json'
@@ -103,7 +103,7 @@ for patt, comp in zip(inj_patterns, inj_compositions):
 
 # Unused space
 needed_nslots = (n_injections-1)*min_MKI_slots \
-				+ np.sum(map(len, inj_patterns)) + agap_length
+				+ np.sum(list(map(len, inj_patterns))) + agap_length
 inefficiency_perc = 100*(1 - float(needed_nslots) / float(ring_length_slots))
 
 

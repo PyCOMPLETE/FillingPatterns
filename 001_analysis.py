@@ -2,8 +2,8 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 
-import mystyle as ms
-import filling_pattern as fp
+from . import mystyle as ms
+from . import filling_pattern as fp
 
 study_name = 'comparison_25ns'
 scheme_fnames = [
@@ -49,19 +49,19 @@ for ifname, fname in enumerate(scheme_fnames):
 
 
     print('\n____________________\n')
-    print('Scheme name: '+fname.split('.')[0])
+    print(('Scheme name: '+fname.split('.')[0]))
 
     print('\n   N. collisions')
-    print('ATLAS/CMS:     %d (%+.1f'%(patt.n_coll_ATLAS, 100*(float(patt.n_coll_ATLAS)/ref_ATLAS-1.))+'%)')
-    print('LHCb:          %d (%+.1f'%(patt.n_coll_LHCb, 100*(float(patt.n_coll_LHCb)/ref_LHCb-1.))+'%)')
-    print('ALICE:         %d (%+.1f'%(patt.n_coll_ALICE, 100*(float(patt.n_coll_ALICE)/ref_ALICE-1.))+'%)')
+    print(('ATLAS/CMS:     %d (%+.1f'%(patt.n_coll_ATLAS, 100*(float(patt.n_coll_ATLAS)/ref_ATLAS-1.))+'%)'))
+    print(('LHCb:          %d (%+.1f'%(patt.n_coll_LHCb, 100*(float(patt.n_coll_LHCb)/ref_LHCb-1.))+'%)'))
+    print(('ALICE:         %d (%+.1f'%(patt.n_coll_ALICE, 100*(float(patt.n_coll_ALICE)/ref_ALICE-1.))+'%)'))
 
-    print('\nN. bunches:    %d'%patt.b1.n_bunches)
-    print('\nN. injections: %d'%(patt.b1.n_injections))
-    print('\nUnused:        %d slots'%(patt.b1.n_unused_slots))
-    print('               (%.1f'%patt.b1.inefficiency_perc+'% LHC)')
-    print('\nInjection types = %s'%repr(map(list, patt.b1.inj_composition_types)))
-    print('Injection len: %s'%repr(map(len, patt.b1.inj_pattern_types)))
+    print(('\nN. bunches:    %d'%patt.b1.n_bunches))
+    print(('\nN. injections: %d'%(patt.b1.n_injections)))
+    print(('\nUnused:        %d slots'%(patt.b1.n_unused_slots)))
+    print(('               (%.1f'%patt.b1.inefficiency_perc+'% LHC)'))
+    print(('\nInjection types = %s'%repr(list(map(list, patt.b1.inj_composition_types)))))
+    print(('Injection len: %s'%repr(list(map(len, patt.b1.inj_pattern_types)))))
 
     with open(study_name+'.tsv', 'a') as fid:
         fid.write('\t'.join([
@@ -72,8 +72,8 @@ for ifname, fname in enumerate(scheme_fnames):
             '%d'%patt.n_coll_ALICE, 
             '%d'%(patt.b1.n_injections),
             '%d'%(patt.b1.n_unused_slots),
-            repr(map(list, patt.b1.inj_composition_types)),
-            repr(map(len, patt.b1.inj_pattern_types)),
+            repr(list(map(list, patt.b1.inj_composition_types))),
+            repr(list(map(len, patt.b1.inj_pattern_types))),
             ])+'\n')
 
     fig1.clear()

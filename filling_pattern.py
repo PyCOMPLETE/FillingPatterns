@@ -80,7 +80,7 @@ class Filling_Pattern_Single_Beam(object):
 
         # Unused space
         needed_nslots = (n_injections-1)*min_MKI_slots \
-                        + np.sum(map(len, inj_patterns)) + agap_length
+                        + np.sum(list(map(len, inj_patterns))) + agap_length
         inefficiency_perc = 100*(1 - float(needed_nslots) / float(ring_length_slots))
 
 
@@ -96,11 +96,11 @@ class Filling_Pattern_Single_Beam(object):
 
         self.inj_patterns = inj_patterns
         self.inj_compositions = inj_compositions
-        self.inj_nbun = np.array(map(np.sum, inj_compositions))
+        self.inj_nbun = np.array(list(map(np.sum, inj_compositions)))
 
         self.inj_pattern_types = inj_pattern_types
         self.inj_composition_types = inj_composition_types
-        self.inj_nbun_types = np.array(map(np.sum, inj_composition_types))
+        self.inj_nbun_types = np.array(list(map(np.sum, inj_composition_types)))
 
         self.n_unused_slots = ring_length_slots - needed_nslots
         self.inefficiency_perc = inefficiency_perc
