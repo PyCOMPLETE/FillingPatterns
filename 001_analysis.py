@@ -11,6 +11,8 @@ scheme_fnames = [
 '25ns_2844b_2832_2560_2631_288bpi_15inj_800ns_bs200ns_4x72_opt.json',
 '25ns_2808b_2800_2618_2658_320bpi_14inj_800ns_bs200ns_4x80.json',
 '25ns_2904b_2896_2656_2734_320bpi_12inj_800ns_bs200ns_4x80b_opt.json',
+'25ns_2604b_2592_2288_2396_288bpi_12inj_900ns_bs225ns_BCMS_baseline.json',
+'25ns_2604b_2592_2313_2416_240bpi_13inj_800ns_bs200ns_5x48_LHCb.json',
 '25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_5x48b_opt.json',
 '25ns_2748b_2736_2258_2378_288bpi_12inj_800ns_bs200ns_6x48.json',
 '25ns_2372b_2360_1784_2216_256bpi_12inj_800ns_bs200ns_run3study.json',

@@ -78,7 +78,8 @@ class Filling_Pattern_Single_Beam(object):
                         + np.sum(map(len, inj_patterns)) + agap_length
         inefficiency_perc = 100*(1 - float(needed_nslots) / float(ring_length_slots))
 
-
+        self.agap_length = agap_length
+        
         self.pattern = pattern
         self.n_bunches = np.sum(pattern)
 
