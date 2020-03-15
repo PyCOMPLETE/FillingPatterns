@@ -83,6 +83,9 @@ class Filling_Pattern_Single_Beam(object):
                         + np.sum(map(len, inj_patterns)) + agap_length
         inefficiency_perc = 100*(1 - float(needed_nslots) / float(ring_length_slots))
 
+        self.actual_MKP_slots = min(gap_lengths)
+        self.actual_MKI_slots = min(gap_lengths[gap_lengths>min_MKP_slots])
+
         self.agap_length = agap_length
         
         self.pattern = pattern

@@ -22,7 +22,7 @@ scheme_fnames = [
 study_name = 'hl_lhc_scenarios'
 scheme_fnames = [
  '25ns_2760b_2748_2495_2560_288bpi_14inj_800ns_bs200ns_STD.json',
- '25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_5x48b_opt.json',
+ '25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_BCMS_5x48b.json',
  '8b4e_1972b_1960_1178_1886_224bpi_12inj_800ns_bs200ns.json'
 ]
 
@@ -141,5 +141,47 @@ for ifname, fname in enumerate(scheme_fnames):
 
     fig1.savefig(fname.split('.')[0]+'.png', dpi=200)
 
+
+    txtlines = []
+    txtlines.append('Scheme name, '+fname.split('.')[0])
+    txtlines.append(','.join(['B1 filled buckets'] +
+                ['%d'%(bb*10+1) for bb in np.where(patt.b1.pattern)[0]]))
+    txtlines.append(','.join(['B2 filled buckets'] +
+                ['%d'%(bb*10+1) for bb in np.where(patt.b2.pattern)[0]]))
+    txtlines.append(','.join(['B1 injection buckets'] +
+                ['%d'%(bb*10+1) for bb in patt.b1.inj_slots]))
+    txtlines.append(','.join(['B2 injection buckets'] +
+                ['%d'%(bb*10+1) for bb in patt.b2.inj_slots]))
+    txtlines.append(','.join(['B1 injection n. bunches'] +
+                ['%d'%(bb*10+1) for bb in patt.b1.inj_nbun]))
+    txtlines.append(','.join(['B2 injection n. bunches'] +
+                ['%d'%(bb*10+1) for bb in patt.b2.inj_nbun]))
+    txtlines.append('N. coll. ATLAS/CMS, %d'%(patt.n_coll_ATLAS))
+    txtlines.append('N. coll. LHCb, %d'%(patt.n_coll_LHCb))
+    txtlines.append('N. coll. ALICE, %d'%(patt.n_coll_ALICE))
+    txtlines.append('B1 n. bunches, %d'%(patt.b1.n_bunches))
+    txtlines.append('B2 n. bunches, %d'%(patt.b2.n_bunches))
+    txtlines.append(','.join(['B1 max. injection length [ns]', 
+                '%d'%((max(map(len, patt.b1.inj_pattern_types)))*25)]))
+    txtlines.append(','.join(['B2 max. injection length [ns]', 
+                '%d'%((max(map(len, patt.b2.inj_pattern_types)))*25)])) 
+    txtlines.append(','.join(['B1 LHC injection kicker gap [ns]', 
+                '%d'%((patt.b1.actual_MKI_slots+1)*25)]))
+    txtlines.append(','.join(['B2 LHC injection kicker gap [ns]', 
+                '%d'%((patt.b2.actual_MKI_slots+1)*25)]))
+    txtlines.append(','.join(['B1 SPS injection kicker gap [ns]', 
+                '%d'%((patt.b1.actual_MKP_slots+1)*25)]))
+    txtlines.append(','.join(['B2 SPS injection kicker gap [ns]', 
+                '%d'%((patt.b2.actual_MKP_slots+1)*25)])) 
+    txtlines.append(','.join(['B1 abort gap [ns]', 
+                '%d'%((patt.b1.agap_length+1)*25)]))
+    txtlines.append(','.join(['B2 abort gap [ns]', 
+                '%d'%((patt.b2.agap_length+1)*25)]))
+
+    
+
+    fnamecsv = fname.split('.')[0]+'.csv'
+    with open(fnamecsv, 'w') as fcsv:
+        fcsv.write('\n'.join(txtlines))
 
 plt.show()
