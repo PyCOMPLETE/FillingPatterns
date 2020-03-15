@@ -21,9 +21,9 @@ scheme_fnames = [
 
 study_name = 'hl_lhc_scenarios'
 scheme_fnames = [
- #'25ns_2760b_2748_2495_2560_288bpi_14inj_800ns_bs200ns_STD.json',
- #'25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_5x48b_opt.json',
- '8b4e_1972b_1960_1178_1878_224bpi_12inj_800ns_bs200ns.json'
+ '25ns_2760b_2748_2495_2560_288bpi_14inj_800ns_bs200ns_STD.json',
+ '25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_5x48b_opt.json',
+ '8b4e_1972b_1960_1178_1886_224bpi_12inj_800ns_bs200ns.json'
 ]
 
 plt.close('all')
@@ -71,7 +71,7 @@ for ifname, fname in enumerate(scheme_fnames):
     print('               (%.1f'%patt.b1.inefficiency_perc+'% LHC)')
     print('\nInjection types = %s'%repr(map(list, patt.b1.inj_composition_types)))
     print('Injection len: %s'%repr(map(len, patt.b1.inj_pattern_types)))
-    print('\nGaps = %s'%repr(set(patt.b1.gap_lengths)))
+    print('\nGaps = %s'%repr(list(set(patt.b1.gap_lengths))))
     print('Abort gap: %s'%repr(patt.b1.agap_length))
 
     with open(study_name+'.tsv', 'a') as fid:

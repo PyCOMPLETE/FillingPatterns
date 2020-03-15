@@ -109,6 +109,11 @@ class Filling_Pattern_Single_Beam(object):
         self.injection_number = injection_number
         self.slot_within_injection = slot_within_injection
 
+        self.ring_length_slots = ring_length_slots
+        self.min_MKI_slots = min_MKI_slots
+        self.min_MKP_slots = min_MKP_slots
+        self.agap_first_slot = agap_first_slot
+
     def belongs_to_group(self, slots_within_injection=None, 
             n_bunches_in_injection=None):
         
