@@ -161,6 +161,8 @@ for ifname, fname in enumerate(scheme_fnames):
     txtlines.append('N. coll. ALICE, %d'%(patt.n_coll_ALICE))
     txtlines.append('B1 n. bunches, %d'%(patt.b1.n_bunches))
     txtlines.append('B2 n. bunches, %d'%(patt.b2.n_bunches))
+    txtlines.append('B1 n. injections, %d'%(patt.b1.n_injections))
+    txtlines.append('B2 n. injections, %d'%(patt.b2.n_injections))
     txtlines.append(','.join(['B1 max. injection length [ns]', 
                 '%d'%((max(map(len, patt.b1.inj_pattern_types)))*25)]))
     txtlines.append(','.join(['B2 max. injection length [ns]', 

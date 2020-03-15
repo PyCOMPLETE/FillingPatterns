@@ -10,6 +10,8 @@ N. coll. LHCb, 2560
 N. coll. ALICE, 2495
 B1 n. bunches, 2760
 B2 n. bunches, 2760
+B1 n. injections, 13
+B2 n. injections, 13
 B1 max. injection length [ns],7725
 B2 max. injection length [ns],7725
 B1 LHC injection kicker gap [ns],800
