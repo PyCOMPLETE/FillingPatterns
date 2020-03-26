@@ -1,5 +1,7 @@
 # Tool for the analysis of LHC filling schemes
 
+**Authors:** G. Iadarola, A. Poyet, G. Sterbini
+
 ## To install:
 ```bash
 git clone https://github.com/giadarol/fillingpatterns.git
