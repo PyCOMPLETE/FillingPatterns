@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import fillingpatterns.mystyle as ms
-import fillingpatterns.filling_pattern as fp
+import fillingpatterns as fp
 
 #study_name = 'comparison_25ns'
 #scheme_fnames = [
