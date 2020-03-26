@@ -63,7 +63,7 @@ This attaches to the object two pandas dataframes with information on the beam-b
 patt.b1.bb_schedule
 patt.b1.bb_schedule
 ```
-containing the following information:
+To list all available information:
 ```python
 patt.b1.bb_schedule.keys()
 # Returns:
@@ -75,3 +75,11 @@ patt.b1.bb_schedule.keys()
 #        'collides in LHCB'],
 #       dtype='object')
 ```
+
+To access one colum:
+```python
+patt.b1.bb_schedule[ 'BB partners in LHCB']
+```
+
+An example with plotting some beam-beam properties is available at [001_from_csv_analyze_bb.py](https://github.com/giadarol/FillingPatterns/blob/master/examples/001_from_csv_analyze_bb.py).
+
