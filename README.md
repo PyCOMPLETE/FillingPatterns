@@ -15,20 +15,38 @@ python 001_from_csv_analyze_bb.py
 ```
 
 ## Usage
+
+### Loading a filling scheme
 The filling scheme can be loaded in different ways:
  * From a json file (as provided by the LPC filling scheme tool):
 ```python
 import fillingschemes as fp
-fp.FillingPattern.from_json('fname.json')
+patt = fp.FillingPattern.from_json('fname.json')
 ```
  * From a csv file (which can be benerated by this tool):
 ```python
 import fillingschemes as fp
-fp.FillingPattern.from_csv('fname.csv')
+patt = fp.FillingPattern.from_csv('fname.csv')
 ```
 
  * By providing two boolian arrays with the scheme:
 ```python
 import fillingschemes as fp
-fp.FillingPattern(pattern_b1, pattern_b2)
+patt = fp.FillingPattern(pattern_b1, pattern_b2)
 ```
+
+### Analyzing the filling scheme
+The filling scheme object has several attributes with characteristics of the filling scheme. For example:
+```python
+patt.b1.n_bunches
+patt.n_coll_ATLAS
+patt.n_coll_LHCb
+patt.n_coll_ALICE
+patt.b1.n_injections
+patt.b1.n_unused_slots
+patt.b1.inj_composition_types
+patt.b1.inj_pattern_types
+patt.b1.gap_lengths
+patt.b1.agap_length
+```
+The example [000_json_to_csv_and_comparison.py](https://github.com/giadarol/FillingPatterns/blob/master/examples/000_json_to_csv_and_comparison.py) illustrates their usage
