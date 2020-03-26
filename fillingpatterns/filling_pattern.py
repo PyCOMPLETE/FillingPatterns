@@ -136,7 +136,6 @@ class Filling_Pattern_Single_Beam(object):
         return mask
 
 
-
 class Filling_Pattern(object):
 
     @classmethod
@@ -144,12 +143,15 @@ class Filling_Pattern(object):
         with open(fname, 'r') as fid:
             data = json.load(fid)
         patt = cls(pattern_b1 = data['beam1'],
-                    pattern_b2 = data['beam2'])
+                   pattern_b2 = data['beam2'],
+                   scheme_name=fname.split('.json')[0])
         return patt
 
     def __init__(self, pattern_b1, pattern_b2, ring_length_slots = 3564,
-            min_MKI_slots = 31, min_MKP_slots = 7, agap_first_slot = 3443):
+            min_MKI_slots = 31, min_MKP_slots = 7, agap_first_slot = 3443,
+            scheme_name='no_name'):
 
+        self.scheme_name = scheme_name
         self.b1 = Filling_Pattern_Single_Beam(pattern_b1, ring_length_slots,
             min_MKI_slots, min_MKP_slots, agap_first_slot)
 
@@ -162,3 +164,51 @@ class Filling_Pattern(object):
                                 np.roll(self.b1.pattern, 891))
         self.n_coll_LHCb = np.sum(self.b1.pattern * \
                                 np.roll(self.b2.pattern, 894))
+
+    def to_csv(self, fname='auto'):
+
+        txtlines = []
+        txtlines.append('Scheme name, ' + self.scheme_name)
+        txtlines.append(','.join(['B1 filled buckets'] +
+                    ['%d'%(bb*10+1) for bb in np.where(self.b1.pattern)[0]]))
+        txtlines.append(','.join(['B2 filled buckets'] +
+                    ['%d'%(bb*10+1) for bb in np.where(self.b2.pattern)[0]]))
+        txtlines.append(','.join(['B1 injection buckets'] +
+                    ['%d'%(bb*10+1) for bb in self.b1.inj_slots]))
+        txtlines.append(','.join(['B2 injection buckets'] +
+                    ['%d'%(bb*10+1) for bb in self.b2.inj_slots]))
+        txtlines.append(','.join(['B1 injection n. bunches'] +
+                    ['%d'%bb for bb in self.b1.inj_nbun]))
+        txtlines.append(','.join(['B2 injection n. bunches'] +
+                    ['%d'%bb for bb in self.b2.inj_nbun]))
+        txtlines.append('N. coll. ATLAS/CMS, %d'%(self.n_coll_ATLAS))
+        txtlines.append('N. coll. LHCb, %d'%(self.n_coll_LHCb))
+        txtlines.append('N. coll. ALICE, %d'%(self.n_coll_ALICE))
+        txtlines.append('B1 n. bunches, %d'%(self.b1.n_bunches))
+        txtlines.append('B2 n. bunches, %d'%(self.b2.n_bunches))
+        txtlines.append('B1 n. injections, %d'%(self.b1.n_injections))
+        txtlines.append('B2 n. injections, %d'%(self.b2.n_injections))
+        txtlines.append(','.join(['B1 max. injection length [ns]',
+                    '%d'%((max(map(len, self.b1.inj_pattern_types)))*25)]))
+        txtlines.append(','.join(['B2 max. injection length [ns]',
+                    '%d'%((max(map(len, self.b2.inj_pattern_types)))*25)]))
+        txtlines.append(','.join(['B1 LHC injection kicker gap [ns]',
+                    '%d'%((self.b1.actual_MKI_slots+1)*25)]))
+        txtlines.append(','.join(['B2 LHC injection kicker gap [ns]',
+                    '%d'%((self.b2.actual_MKI_slots+1)*25)]))
+        txtlines.append(','.join(['B1 SPS injection kicker gap [ns]',
+                    '%d'%((self.b1.actual_MKP_slots+1)*25)]))
+        txtlines.append(','.join(['B2 SPS injection kicker gap [ns]',
+                    '%d'%((self.b2.actual_MKP_slots+1)*25)]))
+        txtlines.append(','.join(['B1 abort gap [ns]',
+                    '%d'%((self.b1.agap_length+1)*25)]))
+        txtlines.append(','.join(['B2 abort gap [ns]',
+                    '%d'%((self.b2.agap_length+1)*25)]))
+
+        if fname == 'auto':
+            fnamecsv = self.scheme_name + '.csv'
+        else:
+            fnamecsv = fname
+
+        with open(fnamecsv, 'w') as fcsv:
+            fcsv.write('\n'.join(txtlines))
