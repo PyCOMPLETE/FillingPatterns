@@ -1,3 +1,5 @@
+import json
+
 import numpy as np
 
 
@@ -116,9 +118,9 @@ class Filling_Pattern_Single_Beam(object):
         self.min_MKP_slots = min_MKP_slots
         self.agap_first_slot = agap_first_slot
 
-    def belongs_to_group(self, slots_within_injection=None, 
+    def belongs_to_group(self, slots_within_injection=None,
             n_bunches_in_injection=None):
-        
+
         mask = self.pattern>0
 
         # Check for nbun in injection
@@ -136,6 +138,14 @@ class Filling_Pattern_Single_Beam(object):
 
 
 class Filling_Pattern(object):
+
+    @classmethod
+    def from_json(cls, fname):
+        with open(fname, 'r') as fid:
+            data = json.load(fid)
+        patt = cls(pattern_b1 = data['beam1'],
+                    pattern_b2 = data['beam2'])
+        return patt
 
     def __init__(self, pattern_b1, pattern_b2, ring_length_slots = 3564,
             min_MKI_slots = 31, min_MKP_slots = 7, agap_first_slot = 3443):
