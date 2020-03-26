@@ -21,7 +21,7 @@ scheme_fnames = [
 
 study_name = 'hl_lhc_scenarios'
 scheme_fnames = [
- '25ns_2760b_2748_2495_2560_288bpi_14inj_800ns_bs200ns_STD.json',
+ '25ns_2760b_2748_2492_2574_288bpi_13inj_800ns_bs200ns.json',
  '25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_BCMS_5x48b.json',
  '8b4e_1972b_1960_1178_1886_224bpi_12inj_800ns_bs200ns.json'
 ]
@@ -69,8 +69,10 @@ for ifname, fname in enumerate(scheme_fnames):
     print('\nN. injections: %d'%(patt.b1.n_injections))
     print('\nUnused:        %d slots'%(patt.b1.n_unused_slots))
     print('               (%.1f'%patt.b1.inefficiency_perc+'% LHC)')
-    print('\nInjection types = %s'%repr(map(list, patt.b1.inj_composition_types)))
-    print('Injection len: %s'%repr(map(len, patt.b1.inj_pattern_types)))
+    print('\nPatterns from SPS:')
+    for pp in patt.b1.inj_composition_types:
+        print('%s'%repr(list(pp)))
+    print('\nInjection len: %s'%repr(map(len, patt.b1.inj_pattern_types)))
     print('\nGaps = %s'%repr(list(set(patt.b1.gap_lengths))))
     print('Abort gap: %s'%repr(patt.b1.agap_length))
 
@@ -153,9 +155,9 @@ for ifname, fname in enumerate(scheme_fnames):
     txtlines.append(','.join(['B2 injection buckets'] +
                 ['%d'%(bb*10+1) for bb in patt.b2.inj_slots]))
     txtlines.append(','.join(['B1 injection n. bunches'] +
-                ['%d'%(bb*10+1) for bb in patt.b1.inj_nbun]))
+                ['%d'%bb for bb in patt.b1.inj_nbun]))
     txtlines.append(','.join(['B2 injection n. bunches'] +
-                ['%d'%(bb*10+1) for bb in patt.b2.inj_nbun]))
+                ['%d'%bb for bb in patt.b2.inj_nbun]))
     txtlines.append('N. coll. ATLAS/CMS, %d'%(patt.n_coll_ATLAS))
     txtlines.append('N. coll. LHCb, %d'%(patt.n_coll_LHCb))
     txtlines.append('N. coll. ALICE, %d'%(patt.n_coll_ALICE))
