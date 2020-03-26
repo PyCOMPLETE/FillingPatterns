@@ -19,5 +19,16 @@ The filling scheme can be loaded in different ways:
  * From a json file (as provided by the LPC filling scheme tool):
 ```python
 import fillingschemes as fp
+fp.FillingPattern.from_json('fname.json')
+```
+ * From a csv file (which can be benerated by this tool):
+```python
+import fillingschemes as fp
+fp.FillingPattern.from_csv('fname.csv')
+```
 
+ * From a csv file (which can be benerated by this tool):
+```python
+import fillingschemes as fp
+fp.FillingPattern.from_csv('fname.csv')
 ```
