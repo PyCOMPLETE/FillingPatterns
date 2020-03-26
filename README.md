@@ -27,8 +27,8 @@ import fillingschemes as fp
 fp.FillingPattern.from_csv('fname.csv')
 ```
 
- * From a csv file (which can be benerated by this tool):
+ * By providing two boolian arrays with the scheme:
 ```python
 import fillingschemes as fp
-fp.FillingPattern.from_csv('fname.csv')
+fp.FillingPattern(pattern_b1, pattern_b2)
 ```
