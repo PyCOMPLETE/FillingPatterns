@@ -257,3 +257,18 @@ class FillingPattern(object):
 
         with open(fnamecsv, 'w') as fcsv:
             fcsv.write('\n'.join(txtlines))
+
+    def compute_beam_beam_schedule(self, n_lr_per_side):
+        from . import bbFunctions
+        print('Computing collision schedules...')
+        self.b1.bb_schedule = bbFunctions.B1CollisionScheduleDF(
+            self.b1.pattern, self.b2.pattern,  n_lr_per_side)
+        print('Done Beam 1')
+        self.b2.bb_schedule = bbFunctions.B2CollisionScheduleDF(
+            self.b1.pattern, self.b2.pattern,  n_lr_per_side)
+        print('Done Beam 2')
+
+        for bb in [self.b1, self.b2]:
+            for ee in ['ATLAS/CMS', 'ALICE', 'LHCB']:
+                 bb.bb_schedule[f'collides in {ee}'] = ~(np.isnan(bb.bb_schedule[f'HO partner in {ee}']))
+
