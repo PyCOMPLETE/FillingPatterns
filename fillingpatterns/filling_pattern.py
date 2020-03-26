@@ -203,6 +203,9 @@ class FillingPattern(object):
         self.b2 = FillingPatternSingleBeam(pattern_b2, ring_length_slots,
             min_MKI_slots, min_MKP_slots, agap_first_slot)
 
+        self.b1.beam_name = 'beam 1'
+        self.b2.beam_name = 'beam 2'
+
         self.n_coll_ATLAS = np.sum(self.b1.pattern*self.b2.pattern)
         self.n_coll_CMS = self.n_coll_ATLAS
         self.n_coll_ALICE = np.sum(self.b2.pattern * \
