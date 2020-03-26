@@ -13,3 +13,11 @@ pip install ./fillingpatterns
 cd fillingpatterns/examples
 python 001_from_csv_analyze_bb.py
 ```
+
+## Usage
+The filling scheme can be loaded in different ways:
+ * From a json file (as provided by the LPC filling scheme tool):
+```python
+import fillingschemes as fp
+
+```
