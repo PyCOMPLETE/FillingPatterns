@@ -2,8 +2,8 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 
-import mystyle as ms
-import filling_pattern as fp
+import fillingpatterns.mystyle as ms
+import fillingpatterns.filling_pattern as fp
 
 #study_name = 'comparison_25ns'
 #scheme_fnames = [
