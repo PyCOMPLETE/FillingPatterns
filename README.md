@@ -2,6 +2,8 @@
 
 **Authors:** G. Iadarola, A. Poyet, G. Sterbini
 
+**Requirements:** Python 3.7, numpy, pandas
+
 ## To install:
 ```bash
 git clone https://github.com/giadarol/fillingpatterns.git
@@ -50,3 +52,15 @@ patt.b1.gap_lengths
 patt.b1.agap_length
 ```
 The example [000_json_to_csv_and_comparison.py](https://github.com/giadarol/FillingPatterns/blob/master/examples/000_json_to_csv_and_comparison.py) illustrates their usage
+
+To compute the beam-beam schedules for the two beams:
+```python
+patt.compute_beam_beam_schedule(n_lr_per_side=16)
+```
+
+This attaches to the object two pandas dataframes with information on the beam-beam encounters
+```python
+patt.b1.bb_schedule
+patt.b1.bb_schedule
+```
+containing the following information:
