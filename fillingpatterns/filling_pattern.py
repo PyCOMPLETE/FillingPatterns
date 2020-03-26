@@ -1,10 +1,9 @@
-
 import numpy as np
 
 
 class Filling_Pattern_Single_Beam(object):
 
-    def __init__(self, pattern, ring_length_slots = 3564, 
+    def __init__(self, pattern, ring_length_slots = 3564,
             min_MKI_slots = 31, min_MKP_slots = 7, agap_first_slot = 3443):
 
         agap_length = ring_length_slots - agap_first_slot
@@ -41,7 +40,7 @@ class Filling_Pattern_Single_Beam(object):
         inj_patterns = []
         inj_compositions = []
         injection_number = 0*pattern - 1
-        slot_within_injection = 0*pattern - 1 
+        slot_within_injection = 0*pattern - 1
         for ii, _ in enumerate(i_train_first):
 
             i_start = inj_slots[ii]
@@ -59,7 +58,7 @@ class Filling_Pattern_Single_Beam(object):
             inj_pattern = inj_pattern[:inj_last_filled+1]
             inj_len = len(inj_pattern)
             injection_number[i_start:i_start+inj_len] = ii
-            slot_within_injection[i_start:i_start+inj_len] = np.arange(inj_len) 
+            slot_within_injection[i_start:i_start+inj_len] = np.arange(inj_len)
 
             inj_patterns.append(inj_pattern)
             inj_compositions.append(inj_composition)
@@ -70,7 +69,7 @@ class Filling_Pattern_Single_Beam(object):
         for patt, comp in zip(inj_patterns, inj_compositions):
             found = False
             for patt_type in inj_pattern_types:
-                if len(patt_type) == len(patt): 
+                if len(patt_type) == len(patt):
                     if np.sum(patt_type-patt)==0:
                         found = True
                         break
@@ -87,7 +86,7 @@ class Filling_Pattern_Single_Beam(object):
         self.actual_MKI_slots = min(gap_lengths[gap_lengths>min_MKP_slots])
 
         self.agap_length = agap_length
-        
+
         self.pattern = pattern
         self.n_bunches = np.sum(pattern)
 
@@ -138,7 +137,7 @@ class Filling_Pattern_Single_Beam(object):
 
 class Filling_Pattern(object):
 
-    def __init__(self, pattern_b1, pattern_b2, ring_length_slots = 3564, 
+    def __init__(self, pattern_b1, pattern_b2, ring_length_slots = 3564,
             min_MKI_slots = 31, min_MKP_slots = 7, agap_first_slot = 3443):
 
         self.b1 = Filling_Pattern_Single_Beam(pattern_b1, ring_length_slots,

@@ -5,19 +5,19 @@ import numpy as np
 import mystyle as ms
 import filling_pattern as fp
 
-study_name = 'comparison_25ns'
-scheme_fnames = [
-'25ns_2760b_2748_2495_2560_288bpi_14inj_800ns_bs200ns_STD.json',
-'25ns_2844b_2832_2560_2631_288bpi_15inj_800ns_bs200ns_4x72_opt.json',
-'25ns_2808b_2800_2618_2658_320bpi_14inj_800ns_bs200ns_4x80.json',
-'25ns_2904b_2896_2656_2734_320bpi_12inj_800ns_bs200ns_4x80b_opt.json',
-'25ns_2604b_2592_2288_2396_288bpi_12inj_900ns_bs225ns_BCMS_baseline.json',
-'25ns_2604b_2592_2313_2416_240bpi_13inj_800ns_bs200ns_5x48_LHCb.json',
-'25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_5x48b_opt.json',
-'25ns_2748b_2736_2258_2378_288bpi_12inj_800ns_bs200ns_6x48.json',
-'25ns_2372b_2360_1784_2216_256bpi_12inj_800ns_bs200ns_run3study.json',
-'25ns_2492b_2480_2048_2301_240bpi_13inj_800ns_bs200ns_run3_study_corrected.json'
-]
+#study_name = 'comparison_25ns'
+#scheme_fnames = [
+#'25ns_2760b_2748_2495_2560_288bpi_14inj_800ns_bs200ns_STD.json',
+#'25ns_2844b_2832_2560_2631_288bpi_15inj_800ns_bs200ns_4x72_opt.json',
+#'25ns_2808b_2800_2618_2658_320bpi_14inj_800ns_bs200ns_4x80.json',
+#'25ns_2904b_2896_2656_2734_320bpi_12inj_800ns_bs200ns_4x80b_opt.json',
+#'25ns_2604b_2592_2288_2396_288bpi_12inj_900ns_bs225ns_BCMS_baseline.json',
+#'25ns_2604b_2592_2313_2416_240bpi_13inj_800ns_bs200ns_5x48_LHCb.json',
+#'25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_5x48b_opt.json',
+#'25ns_2748b_2736_2258_2378_288bpi_12inj_800ns_bs200ns_6x48.json',
+#'25ns_2372b_2360_1784_2216_256bpi_12inj_800ns_bs200ns_run3study.json',
+#'25ns_2492b_2480_2048_2301_240bpi_13inj_800ns_bs200ns_run3_study_corrected.json'
+#]
 
 study_name = 'hl_lhc_scenarios'
 scheme_fnames = [
@@ -37,7 +37,7 @@ with open(study_name+'.tsv', 'w') as fid:
         'N_bunches',
         'N_coll_ATLAS',
         'N_coll_LHCb',
-        'N_coll_ALICE', 
+        'N_coll_ALICE',
         'N_inj',
         'N_unused',
         'Injection types',
@@ -48,13 +48,13 @@ for ifname, fname in enumerate(scheme_fnames):
     with open(fname, 'r') as fid:
         data = json.load(fid)
 
-    patt = fp.Filling_Pattern(pattern_b1 = data['beam1'], 
+    patt = fp.Filling_Pattern(pattern_b1 = data['beam1'],
                     pattern_b2 = data['beam2'])
 
     if ifname == 0:
         ref_ATLAS = patt.n_coll_ATLAS
         ref_LHCb = patt.n_coll_LHCb
-        ref_ALICE = patt.n_coll_ALICE 
+        ref_ALICE = patt.n_coll_ALICE
 
 
     print('\n____________________\n')
@@ -82,7 +82,7 @@ for ifname, fname in enumerate(scheme_fnames):
             '%d'%patt.b1.n_bunches,
             '%d'%patt.n_coll_ATLAS,
             '%d'%patt.n_coll_LHCb,
-            '%d'%patt.n_coll_ALICE, 
+            '%d'%patt.n_coll_ALICE,
             '%d'%(patt.b1.n_injections),
             '%d'%(patt.b1.n_unused_slots),
             repr(map(list, patt.b1.inj_composition_types)),
@@ -90,17 +90,17 @@ for ifname, fname in enumerate(scheme_fnames):
             ])+'\n')
 
     fig1.clear()
-    ax = plt.subplot2grid(shape=(3,2), loc=(0,0), 
+    ax = plt.subplot2grid(shape=(3,2), loc=(0,0),
             rowspan=1, colspan=2, fig=fig1)
-    
+
     axinj_list = [
-        plt.subplot2grid(shape=(3,2), loc=(1,0), 
+        plt.subplot2grid(shape=(3,2), loc=(1,0),
             rowspan=1, colspan=1, fig=fig1),
-        plt.subplot2grid(shape=(3,2), loc=(2,0), 
+        plt.subplot2grid(shape=(3,2), loc=(2,0),
             rowspan=1, colspan=1, fig=fig1),
-        plt.subplot2grid(shape=(3,2), loc=(1,1), 
+        plt.subplot2grid(shape=(3,2), loc=(1,1),
             rowspan=1, colspan=1, fig=fig1),
-        plt.subplot2grid(shape=(3,2), loc=(2,1), 
+        plt.subplot2grid(shape=(3,2), loc=(2,1),
             rowspan=1, colspan=1, fig=fig1),
         ]
 
@@ -120,7 +120,7 @@ for ifname, fname in enumerate(scheme_fnames):
     fig1.subplots_adjust(left=.03, right=.97, bottom=.12, top=.9, hspace=.8)
 
     for i_plot, i_inj in enumerate(np.argsort(patt.b1.inj_nbun_types)[::-1]):
-        
+
         this_patt = patt.b1.inj_pattern_types[i_inj]
         thisax = axinj_list[i_plot]
 
@@ -128,10 +128,10 @@ for ifname, fname in enumerate(scheme_fnames):
         y_pattern = 0.*x_pattern
         for ii, filled in enumerate(this_patt):
             if filled>0.5:
-                y_pattern[np.logical_and(x_pattern>=ii, 
+                y_pattern[np.logical_and(x_pattern>=ii,
                             x_pattern<(ii+1))] = 1.
 
-        thisax.fill_between(x = x_pattern, y1=y_pattern, 
+        thisax.fill_between(x = x_pattern, y1=y_pattern,
                     alpha=0.5, linewidth=0., edgecolor='k')
         thisax.set_ylim(0, 1.2)
         thisax.set_yticks([])
@@ -165,24 +165,22 @@ for ifname, fname in enumerate(scheme_fnames):
     txtlines.append('B2 n. bunches, %d'%(patt.b2.n_bunches))
     txtlines.append('B1 n. injections, %d'%(patt.b1.n_injections))
     txtlines.append('B2 n. injections, %d'%(patt.b2.n_injections))
-    txtlines.append(','.join(['B1 max. injection length [ns]', 
+    txtlines.append(','.join(['B1 max. injection length [ns]',
                 '%d'%((max(map(len, patt.b1.inj_pattern_types)))*25)]))
-    txtlines.append(','.join(['B2 max. injection length [ns]', 
-                '%d'%((max(map(len, patt.b2.inj_pattern_types)))*25)])) 
-    txtlines.append(','.join(['B1 LHC injection kicker gap [ns]', 
+    txtlines.append(','.join(['B2 max. injection length [ns]',
+                '%d'%((max(map(len, patt.b2.inj_pattern_types)))*25)]))
+    txtlines.append(','.join(['B1 LHC injection kicker gap [ns]',
                 '%d'%((patt.b1.actual_MKI_slots+1)*25)]))
-    txtlines.append(','.join(['B2 LHC injection kicker gap [ns]', 
+    txtlines.append(','.join(['B2 LHC injection kicker gap [ns]',
                 '%d'%((patt.b2.actual_MKI_slots+1)*25)]))
-    txtlines.append(','.join(['B1 SPS injection kicker gap [ns]', 
+    txtlines.append(','.join(['B1 SPS injection kicker gap [ns]',
                 '%d'%((patt.b1.actual_MKP_slots+1)*25)]))
-    txtlines.append(','.join(['B2 SPS injection kicker gap [ns]', 
-                '%d'%((patt.b2.actual_MKP_slots+1)*25)])) 
-    txtlines.append(','.join(['B1 abort gap [ns]', 
+    txtlines.append(','.join(['B2 SPS injection kicker gap [ns]',
+                '%d'%((patt.b2.actual_MKP_slots+1)*25)]))
+    txtlines.append(','.join(['B1 abort gap [ns]',
                 '%d'%((patt.b1.agap_length+1)*25)]))
-    txtlines.append(','.join(['B2 abort gap [ns]', 
+    txtlines.append(','.join(['B2 abort gap [ns]',
                 '%d'%((patt.b2.agap_length+1)*25)]))
-
-    
 
     fnamecsv = fname.split('.')[0]+'.csv'
     with open(fnamecsv, 'w') as fcsv:
