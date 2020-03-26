@@ -51,7 +51,7 @@ patt.b1.inj_pattern_types
 patt.b1.gap_lengths
 patt.b1.agap_length
 ```
-The example [000_json_to_csv_and_comparison.py](https://github.com/giadarol/FillingPatterns/blob/master/examples/000_json_to_csv_and_comparison.py) illustrates their usage
+The example [000_json_to_csv_and_comparison.py](https://github.com/giadarol/FillingPatterns/blob/master/examples/000_json_to_csv_and_comparison.py) illustrates their usage.
 
 To compute the beam-beam schedules for the two beams:
 ```python
@@ -63,7 +63,8 @@ This attaches to the object two pandas dataframes with information on the beam-b
 patt.b1.bb_schedule
 patt.b1.bb_schedule
 ```
-To list all available information:
+
+To inspect the available information:
 ```python
 patt.b1.bb_schedule.keys()
 # Returns:
@@ -81,5 +82,5 @@ To access one colum:
 patt.b1.bb_schedule[ 'BB partners in LHCB']
 ```
 
-An example with plotting some beam-beam properties is available at [001_from_csv_analyze_bb.py](https://github.com/giadarol/FillingPatterns/blob/master/examples/001_from_csv_analyze_bb.py).
+An example plotting some beam-beam properties is available at [001_from_csv_analyze_bb.py](https://github.com/giadarol/FillingPatterns/blob/master/examples/001_from_csv_analyze_bb.py).
 
