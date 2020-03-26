@@ -31,7 +31,7 @@ import fillingschemes as fp
 patt = fp.FillingPattern.from_csv('fname.csv')
 ```
 
- * By providing two boolian arrays with the scheme:
+ * By providing two boolean arrays with the scheme:
 ```python
 import fillingschemes as fp
 patt = fp.FillingPattern(pattern_b1, pattern_b2)
