@@ -61,7 +61,7 @@ patt.compute_beam_beam_schedule(n_lr_per_side=16)
 This attaches to the object two pandas dataframes with information on the beam-beam encounters
 ```python
 patt.b1.bb_schedule
-patt.b1.bb_schedule
+patt.b2.bb_schedule
 ```
 
 To inspect the available information:
