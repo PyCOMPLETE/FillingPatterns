@@ -64,14 +64,14 @@ patt.b1.bb_schedule
 patt.b1.bb_schedule
 ```
 containing the following information:
-```ipython
+```python
 patt.b1.bb_schedule.keys()
-Out[5]:
-Index(['HO partner in ALICE', '# of LR in ALICE', 'BB partners in ALICE',
-       'Positions in ALICE', 'HO partner in ATLAS/CMS', '# of LR in ATLAS/CMS',
-       'BB partners in ATLAS/CMS', 'Positions in ATLAS/CMS',
-       'HO partner in LHCB', '# of LR in LHCB', 'BB partners in LHCB',
-       'Positions in LHCB', 'collides in ATLAS/CMS', 'collides in ALICE',
-       'collides in LHCB'],
-      dtype='object')
+# Returns:
+# Index(['HO partner in ALICE', '# of LR in ALICE', 'BB partners in ALICE',
+#        'Positions in ALICE', 'HO partner in ATLAS/CMS', '# of LR in ATLAS/CMS',
+#        'BB partners in ATLAS/CMS', 'Positions in ATLAS/CMS',
+#        'HO partner in LHCB', '# of LR in LHCB', 'BB partners in LHCB',
+#        'Positions in LHCB', 'collides in ATLAS/CMS', 'collides in ALICE',
+#        'collides in LHCB'],
+#       dtype='object')
 ```
