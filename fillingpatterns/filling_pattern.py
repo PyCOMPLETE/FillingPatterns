@@ -3,13 +3,13 @@ import json
 import numpy as np
 
 
-class Filling_Pattern_Single_Beam(object):
+class FillingPatternSingleBeam(object):
 
     def __init__(self, pattern, ring_length_slots = 3564,
             min_MKI_slots = 31, min_MKP_slots = 7, agap_first_slot = 3443):
 
         agap_length = ring_length_slots - agap_first_slot
-        pattern = np.array(pattern)
+        pattern = np.int_(np.array(pattern))
 
         assert(len(pattern)<=ring_length_slots)
 
@@ -136,7 +136,7 @@ class Filling_Pattern_Single_Beam(object):
         return mask
 
 
-class Filling_Pattern(object):
+class FillingPattern(object):
 
     @classmethod
     def from_json(cls, fname):
@@ -147,15 +147,60 @@ class Filling_Pattern(object):
                    scheme_name=fname.split('.json')[0])
         return patt
 
+    @classmethod
+    def from_csv(cls, fname):
+
+        with open(fname, 'r') as fid:
+            lines = fid.readlines()
+
+        patt_dict = {ll.split(',', 1)[0]: ll.split(',', 1)[1].replace('\n', '') for ll in lines}
+
+        for bb in [1, 2]:
+            # Build slot array
+            patt_arr = np.array(3564*[False])
+            filled_buckets = np.fromstring(patt_dict[f'B{bb} filled buckets'],
+                       sep=',', dtype=np.int)
+            for fbk in filled_buckets:
+                assert(np.mod(fbk-1, 10) == 0)
+                slot = (fbk-1)//10
+                patt_arr[slot] = True
+            patt_dict[f'pattern_array_b{bb}'] = patt_arr
+
+            # Get gaps in slots
+            mki_gap_in_slots = int(np.round(
+                float(patt_dict[f'B{bb} LHC injection kicker gap [ns]'])/25 + - 1))
+            patt_dict[f'mki_gap_in_slots_b{bb}'] = mki_gap_in_slots
+            mkp_gap_in_slots = int(np.round(
+                float(patt_dict[f'B{bb} SPS injection kicker gap [ns]'])/25 + - 1))
+            patt_dict[f'mkp_gap_in_slots_b{bb}'] = mkp_gap_in_slots
+            abort_gap_in_slots = int(np.round(
+                float(patt_dict[f'B{bb} abort gap [ns]'])/25 + - 1))
+            patt_dict[f'abort_gap_in_slots_b{bb}'] = abort_gap_in_slots
+
+        patt_dict['mki_min'] = np.min([patt_dict[f'mki_gap_in_slots_b{bb}'] for bb in [1, 2]])
+        patt_dict['mkp_min']= np.min([patt_dict[f'mkp_gap_in_slots_b{bb}'] for bb in [1, 2]])
+        patt_dict['agap_min'] = np.min([patt_dict[f'abort_gap_in_slots_b{bb}'] for bb in [1, 2]])
+        patt_dict['agap_first_slot'] = 3564 - patt_dict['agap_min']
+
+        patt = cls(pattern_b1=patt_dict['pattern_array_b1'],
+            pattern_b2=patt_dict['pattern_array_b2'],
+            ring_length_slots = 3564,
+            min_MKI_slots=patt_dict['mki_min'],
+            min_MKP_slots=patt_dict['mkp_min'],
+            agap_first_slot=patt_dict['agap_first_slot'],
+            scheme_name=patt_dict['Scheme name'])
+
+        return patt
+
     def __init__(self, pattern_b1, pattern_b2, ring_length_slots = 3564,
             min_MKI_slots = 31, min_MKP_slots = 7, agap_first_slot = 3443,
             scheme_name='no_name'):
 
         self.scheme_name = scheme_name
-        self.b1 = Filling_Pattern_Single_Beam(pattern_b1, ring_length_slots,
+        self.b1 = FillingPatternSingleBeam(pattern_b1, ring_length_slots,
             min_MKI_slots, min_MKP_slots, agap_first_slot)
 
-        self.b2 = Filling_Pattern_Single_Beam(pattern_b2, ring_length_slots,
+        self.b2 = FillingPatternSingleBeam(pattern_b2, ring_length_slots,
             min_MKI_slots, min_MKP_slots, agap_first_slot)
 
         self.n_coll_ATLAS = np.sum(self.b1.pattern*self.b2.pattern)
@@ -168,7 +213,7 @@ class Filling_Pattern(object):
     def to_csv(self, fname='auto'):
 
         txtlines = []
-        txtlines.append('Scheme name, ' + self.scheme_name)
+        txtlines.append('Scheme name,' + self.scheme_name)
         txtlines.append(','.join(['B1 filled buckets'] +
                     ['%d'%(bb*10+1) for bb in np.where(self.b1.pattern)[0]]))
         txtlines.append(','.join(['B2 filled buckets'] +

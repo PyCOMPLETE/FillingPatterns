@@ -46,7 +46,7 @@ with open(study_name+'.tsv', 'w') as fid:
 
 for ifname, fname in enumerate(scheme_fnames):
 
-    patt = fp.Filling_Pattern.from_json(fname)
+    patt = fp.FillingPattern.from_json(fname)
 
     if ifname == 0:
         ref_ATLAS = patt.n_coll_ATLAS
