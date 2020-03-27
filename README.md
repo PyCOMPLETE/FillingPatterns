@@ -6,7 +6,7 @@
 
 ## To install:
 ```bash
-git clone https://github.com/giadarol/fillingpatterns.git
+git clone https://github.com/PyCOMPLETE/FillingPatterns.git
 pip install ./fillingpatterns
 ```
 
