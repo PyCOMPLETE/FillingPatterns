@@ -356,7 +356,7 @@ def B1CollisionScheduleDF (B1_bunches, B2_bunches, numberOfLRToConsider):
             dictonary.update({head_on_names[i] : { n : head_on }, secondary_names[i] : { n : numb_of_long_range }, \
                              encounters_names[i] : { n : encounters },  positions_names[i] : { n : positions } })
 
-        B1df = B1df.append(pd.DataFrame(dictonary))
+        B1df = pd.concat([B1df,pd.DataFrame(dictonary)])
 
 
     return B1df
@@ -486,7 +486,7 @@ def B2CollisionScheduleDF (B1_bunches, B2_bunches, numberOfLRToConsider):
             dictonary.update({head_on_names[i] : { n : head_on }, secondary_names[i] : { n : numb_of_long_range }, \
                              encounters_names[i] : { n : encounters },  positions_names[i] : { n : positions } })
 
-        B2df = B2df.append(pd.DataFrame(dictonary))
+        B2df = pd.concat([B2df,pd.DataFrame(dictonary)])
 
 
     return B2df
