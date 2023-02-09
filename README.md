@@ -55,7 +55,7 @@ The example [000_json_to_csv_and_comparison.py](https://github.com/PyCOMPLETE/Fi
 
 To compute the beam-beam schedules for the two beams:
 ```python
-patt.compute_beam_beam_schedule(n_lr_per_side=16)
+patt.compute_beam_beam_schedule(n_lr_per_side=16, previous = 1)
 ```
 
 This attaches to the object two pandas dataframes with information on the beam-beam encounters

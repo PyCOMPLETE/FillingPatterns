@@ -600,10 +600,10 @@ def events_in_slots_vec(filling_scheme_to_be_rolled, filling_scheme, IPN_pos, n_
         np.array(tot_LR): how many collision for that particle in filling_scheme_to_be_rolled
     '''
     n_bunches = len(filling_scheme_to_be_rolled)
-    v = np.empty([n_bunches,2*n_LR+1])
-    v[:] = np.nan
-    v_pos = np.empty([n_bunches,2*n_LR+1])
-    v_pos[:] = np.nan
+    v1 = np.empty([n_bunches,2*n_LR+1])
+    v1[:] = np.nan
+    v1_pos = np.empty([n_bunches,2*n_LR+1])
+    v1_pos[:] = np.nan
     tot_LR = np.zeros(n_bunches)
     count = 0
     for i in (np.arange(n_LR*2+1) - n_LR + IPN_pos):
@@ -614,15 +614,25 @@ def events_in_slots_vec(filling_scheme_to_be_rolled, filling_scheme, IPN_pos, n_
             s_pos[:] = np.nan
             filling_scheme_rolled = np.concatenate([filling_scheme_to_be_rolled[-(i%n_bunches):],\
             filling_scheme_to_be_rolled[:-(i%n_bunches)]])
-            index_events = (filling_scheme_rolled*filling_scheme)
-            v[(np.where(index_events)[0]+(-i))%n_bunches,count] = np.concatenate([s[(np.where(index_events)[0]+(-n_LR))%n_bunches],\
+            index_events = (filling_scheme_rolled*filling_scheme)   
+            v1[(np.where(index_events)[0]+(-i))%n_bunches,count] = np.concatenate([s[(np.where(index_events)[0]+(-n_LR))%n_bunches],\
                 np.array(list(np.where(index_events))).T],axis = 1)[:,1]
             
-            v_pos[(np.where(index_events)[0]+(-i))%n_bunches,count] = np.concatenate([s_pos[(np.where(index_events)[0]+(-n_LR))%n_bunches],\
+            
+            v1_pos[(np.where(index_events)[0]+(-i))%n_bunches,count] = np.concatenate([s_pos[(np.where(index_events)[0]+(-n_LR))%n_bunches],\
                 i*np.ones([len(np.where(index_events)[0]),1])],axis = 1)[:,1]
             count +=1
             tot_LR +=np.concatenate([index_events[-((-i)%n_bunches):],index_events[:-((-i)%n_bunches)]])
-    return v,v_pos,tot_LR
+    t = ~np.isnan(v1)
+    v = [v1[ii][t[ii]] for ii in np.arange(n_bunches)]
+
+    t_pos = ~np.isnan(v1)
+    v_pos = [v1_pos[ii][t_pos[ii]] for ii in np.arange(n_bunches)]
+    #v1 = [list(v1[ii]) for ii in np.arange(3564)]
+    #print(t[26])
+    #print(v[26].shape)
+    #print([v[ii][t[ii]] for ii in np.arange(n_bunches)])
+    return v ,v_pos ,tot_LR
 
 
 
@@ -667,8 +677,9 @@ def bbschedule(bool_slotsB1,bool_slotsB2, numberOfLRToConsider):
          = events_in_slots_vec(bool_slotsB1,bool_slotsB2,Dic1[IPN_B1][0],Dic1[IPN_B1][1])
         df_B1[f'# of LR in {IPN_B1}'] = sum_v[ones_B1[0]]
         df_B1[f'HO partner in {IPN_B1}'] = events_in_slots(bool_slotsB1,bool_slotsB2,Dic1[IPN_B1][0])[0].iloc[:,0]
-        df_B1[f'BB partners in {IPN_B1}'] = list(v[ones_B1[0]])
-        df_B1[f'Positions in {IPN_B1}'] = list(v_pos[ones_B1[0]]-Dic1[IPN_B1][0])
+        
+        df_B1[f'BB partners in {IPN_B1}'] = [list(v[ii]) for ii in ones_B1[0]]
+        df_B1[f'Positions in {IPN_B1}'] = [list(v_pos[ii]-Dic1[IPN_B1][0]) for ii in ones_B1[0]]
     
     for j in np.arange(len(Dic1.keys())):
         
@@ -677,6 +688,6 @@ def bbschedule(bool_slotsB1,bool_slotsB2, numberOfLRToConsider):
          = events_in_slots_vec(bool_slotsB2,bool_slotsB1,Dic2[IPN_B2][0],Dic2[IPN_B2][1])
         df_B2[f'# of LR in {IPN_B2}'] = sum_v[ones_B2[0]]
         df_B2[f'HO partner in {IPN_B2}'] = events_in_slots(bool_slotsB2,bool_slotsB1,Dic2[IPN_B2][0])[0].iloc[:,0]
-        df_B2[f'BB partners in {IPN_B2}'] = list(v[ones_B2[0]])
-        df_B2[f'Positions in {IPN_B2}'] = list(v_pos[ones_B2[0]]-Dic2[IPN_B2][0])
+        df_B2[f'BB partners in {IPN_B2}'] = [list(v[ii]) for ii in ones_B2[0]]
+        df_B2[f'Positions in {IPN_B2}'] = [list(v_pos[ii]-Dic1[IPN_B2][0]) for ii in ones_B2[0]]
     return df_B1,df_B2
