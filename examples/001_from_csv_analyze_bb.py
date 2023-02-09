@@ -1,3 +1,4 @@
+
 import fillingpatterns as fp
 
 fname = '25ns_2760b_2748_2492_2574_288bpi_13inj_800ns_bs200ns.csv'
@@ -5,10 +6,11 @@ fname = '25ns_2760b_2748_2492_2574_288bpi_13inj_800ns_bs200ns.csv'
 # fname = '8b4e_1972b_1960_1178_1886_224bpi_12inj_800ns_bs200ns.csv'
 
 # Load filling pattern
+
 patt = fp.FillingPattern.from_csv(fname)
 
 # Compute bb schedule
-patt.compute_beam_beam_schedule(n_lr_per_side=16)
+patt.compute_beam_beam_schedule(n_lr_per_side=16, previous = 1)
 
 #########
 # Plots #
@@ -61,6 +63,6 @@ for ib, beam in zip([1, 2], [patt.b1, patt.b2]):
     fig1.subplots_adjust(left=.06, right=.96, top=.92)
     fig1.suptitle(patt.scheme_name + ' - ' + beam.beam_name)
 
-    fig1.savefig(fname.split('.csv')[0] + f"_{beam.beam_name.replace(' ', '')}_bb_summary.png", dpi=200)
+    fig1.savefig(fname.split('.csv')[0] + f"_{beam.beam_name.replace(' ', '')}_bb_summary1.png", dpi=200)
 
 plt.show()

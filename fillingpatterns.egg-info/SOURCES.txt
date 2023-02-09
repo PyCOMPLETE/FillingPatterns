@@ -1,0 +1,13 @@
+README.md
+setup.py
+fillingpatterns/__init__.py
+fillingpatterns/bbFunctions.py
+fillingpatterns/dotdict.py
+fillingpatterns/filling_pattern.py
+fillingpatterns/filling_pattern1.py
+fillingpatterns/mystyle.py
+fillingpatterns.egg-info/PKG-INFO
+fillingpatterns.egg-info/SOURCES.txt
+fillingpatterns.egg-info/dependency_links.txt
+fillingpatterns.egg-info/not-zip-safe
+fillingpatterns.egg-info/top_level.txt
