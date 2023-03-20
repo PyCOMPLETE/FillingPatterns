@@ -689,10 +689,6 @@ def events_in_slots_vec(filling_scheme_to_be_rolled, filling_scheme, IPN_pos, n_
 
     t_pos = ~np.isnan(v1)
     v_pos = [v1_pos[ii][t_pos[ii]] for ii in np.arange(n_bunches)]
-    #v1 = [list(v1[ii]) for ii in np.arange(3564)]
-    #print(t[26])
-    #print(v[26].shape)
-    #print([v[ii][t[ii]] for ii in np.arange(n_bunches)])
     return v ,v_pos ,tot_LR
 
 
