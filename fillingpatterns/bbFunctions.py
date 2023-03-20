@@ -671,28 +671,28 @@ def events_in_slots_vec(filling_scheme_to_be_rolled, filling_scheme, IPN_pos, n_
     tot_LR = np.zeros(n_bunches)
     count = 0
     for i in (np.arange(n_LR*2+1) - n_LR + IPN_pos):
+        s = np.empty([n_bunches,1])
+        s[:] = np.nan
+        s_pos = np.empty([n_bunches,1])
+        s_pos[:] = np.nan
+        filling_scheme_rolled = np.concatenate([filling_scheme_to_be_rolled[-(i%n_bunches):],\
+        filling_scheme_to_be_rolled[:-(i%n_bunches)]])
+        index_events = (filling_scheme_rolled*filling_scheme)   
+        v1[(np.where(index_events)[0]+(-i))%n_bunches,count] = np.concatenate([s[(np.where(index_events)[0]+(-n_LR))%n_bunches],\
+            np.array(list(np.where(index_events))).T],axis = 1)[:,1]
+        
+        
+        v1_pos[(np.where(index_events)[0]+(-i))%n_bunches,count] = np.concatenate([s_pos[(np.where(index_events)[0]+(-n_LR))%n_bunches],\
+            i*np.ones([len(np.where(index_events)[0]),1])],axis = 1)[:,1]
+        count +=1
         if i !=IPN_pos:
-            s = np.empty([n_bunches,1])
-            s[:] = np.nan
-            s_pos = np.empty([n_bunches,1])
-            s_pos[:] = np.nan
-            filling_scheme_rolled = np.concatenate([filling_scheme_to_be_rolled[-(i%n_bunches):],\
-            filling_scheme_to_be_rolled[:-(i%n_bunches)]])
-            index_events = (filling_scheme_rolled*filling_scheme)   
-            v1[(np.where(index_events)[0]+(-i))%n_bunches,count] = np.concatenate([s[(np.where(index_events)[0]+(-n_LR))%n_bunches],\
-                np.array(list(np.where(index_events))).T],axis = 1)[:,1]
-            
-            
-            v1_pos[(np.where(index_events)[0]+(-i))%n_bunches,count] = np.concatenate([s_pos[(np.where(index_events)[0]+(-n_LR))%n_bunches],\
-                i*np.ones([len(np.where(index_events)[0]),1])],axis = 1)[:,1]
-            count +=1
             tot_LR +=np.concatenate([index_events[-((-i)%n_bunches):],index_events[:-((-i)%n_bunches)]])
     t = ~np.isnan(v1)
     v = [v1[ii][t[ii]] for ii in np.arange(n_bunches)]
 
     t_pos = ~np.isnan(v1)
     v_pos = [v1_pos[ii][t_pos[ii]] for ii in np.arange(n_bunches)]
-    return v1 ,v1_pos ,tot_LR
+    return v ,v_pos ,tot_LR
 
 
 
