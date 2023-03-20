@@ -26,11 +26,9 @@ def computeBBMatrix(numberOfLRToConsider):
         4. B2 Bunch 0 meets B1 Bunch 0 in IP1 and 5.
         5. B2 Bunch 0 meets B1 Bunch 2673 in IP2.
         6. B2 Bunch 0 meets B1 Bunch 894 in IP8.
-
         === EXAMPLE 1 ===
         myMatrix=computeBBMatrix(numberOfLRToConsider=20)
         #in this case the total number of LR will be 160: 40 in IR1/5, 40 in IR2, and 40 in IR8.
-
         === EXAMPLE 2 ===
         myMatrix=computeBBMatrix(numberOfLRToConsider=[20,15,16])
         #in this case the total number of LR will be 142: 40 in IR1/5, 30 in IR2, and 32 in IR8.
@@ -558,6 +556,69 @@ def BeamFilling2str (bunchFilling, flagChars = ['e', 'b']):
     bunchesBoolean = np.array(bunchFilling) == 1.0
     return _BeamFilling2str(bunchesBoolean, flagChars)
 
+
+
+def CollisionsInTheGivenSlot_vec(B1_filling_scheme, B2_filling_scheme, slot_number, numberOfLRToConsider):
+    '''
+    This function returns three vectors with the information, respectively, about 
+    the partner bunch of filling_scheme in the collision with filling_scheme_to_be_rolled, 
+    about the position of the collision saved in the previous vector, and finally about the
+    total number of collision for that particle of the filling_scheme_to_be_rolled
+    Args:
+        filling_scheme_to_be_rolled: a boolean np.array, that represent the fillig scheme
+        to be rolled in order to compute the collision
+        filling_scheme: a boolean np.array, that represent the other filling scheme
+        IPN_pos: int that give the position of the detector, around which we want to compute the LR
+        n_LR: is a int that represent how many LR the user want to consider around the detector
+    Return:
+        np.array(v): information about the partner of the collision (filling_scheme)
+        np.array(v_pos): information about the position around the detector where happen the collision
+        np.array(tot_LR): how many collision for that particle in filling_scheme_to_be_rolled
+        or 
+        pd.DataFrame that give the information about the partner beam collimator "BB in LR"
+        and the position of the LR 
+        np.array that give the information about the posi( to verify)
+    '''
+    if numberOfLRToConsider== 0:
+        n_bunches = len(B1_filling_scheme)
+        filling_scheme_rolled = np.concatenate([B1_filling_scheme[-(slot_number%n_bunches):],\
+            B1_filling_scheme[:-(slot_number%n_bunches)]])
+        index_events = (filling_scheme_rolled*B2_filling_scheme)
+        return  pd.DataFrame({'BB_collision' : np.where(B2_filling_scheme*index_events)[0], 'pos_collision' : slot_number},\
+            index = (np.where(filling_scheme_rolled*index_events)[0]+(-slot_number))%n_bunches), \
+            np.concatenate([index_events[-((-slot_number)%n_bunches):],index_events[:-((-slot_number)%n_bunches)]])
+    else:
+        n_bunches = len(B1_filling_scheme)
+        v1 = np.empty([n_bunches,2*numberOfLRToConsider+1])
+        v1[:] = np.nan
+        v1_pos = np.empty([n_bunches,2*numberOfLRToConsider+1])
+        v1_pos[:] = np.nan
+        tot_LR = np.zeros(n_bunches)
+        count = 0
+        for i in (np.arange(numberOfLRToConsider*2+1) - numberOfLRToConsider + slot_number):
+            if i !=slot_number:
+                s = np.empty([n_bunches,1])
+                s[:] = np.nan
+                s_pos = np.empty([n_bunches,1])
+                s_pos[:] = np.nan
+                filling_scheme_rolled = np.concatenate([B1_filling_scheme[-(i%n_bunches):],\
+                B1_filling_scheme[:-(i%n_bunches)]])
+                index_events = (filling_scheme_rolled*B2_filling_scheme)   
+                v1[(np.where(index_events)[0]+(-i))%n_bunches,count] = np.concatenate([s[(np.where(index_events)[0]+(-numberOfLRToConsider))%n_bunches],\
+                    np.array(list(np.where(index_events))).T],axis = 1)[:,1]
+                
+                
+                v1_pos[(np.where(index_events)[0]+(-i))%n_bunches,count] = np.concatenate([s_pos[(np.where(index_events)[0]+(-numberOfLRToConsider))%n_bunches],\
+                    i*np.ones([len(np.where(index_events)[0]),1])],axis = 1)[:,1]
+                count +=1
+                tot_LR +=np.concatenate([index_events[-((-i)%n_bunches):],index_events[:-((-i)%n_bunches)]])
+        t = ~np.isnan(v1)
+        v = [v1[ii][t[ii]] for ii in np.arange(n_bunches)]
+
+        t_pos = ~np.isnan(v1)
+        v_pos = [v1_pos[ii][t_pos[ii]] for ii in np.arange(n_bunches)]
+        return v1 ,v1_pos ,tot_LR
+
 def events_in_slots(filling_scheme_to_be_rolled, filling_scheme,LR):
     '''
     Create a dataframe that represent the particle of the filling_scheme that 
@@ -636,7 +697,7 @@ def events_in_slots_vec(filling_scheme_to_be_rolled, filling_scheme, IPN_pos, n_
 
 
 
-def bbschedule(bool_slotsB1,bool_slotsB2, numberOfLRToConsider):
+def bbschedule(bool_slotsB1,bool_slotsB2, numberOfLRToConsider, Dict1 = {'ATLAS/CMS':0,'LHCB':2670, 'ALICE': 891}, n_slots = 3564, Dict_nLRs = {'Nan' : np.NaN}):
     ''' 
     This function return two pd.DataFrame, associated to the two beams, with the information 
     about the purtner bunch for HO and LR, about the position of collision with respect 
@@ -647,10 +708,12 @@ def bbschedule(bool_slotsB1,bool_slotsB2, numberOfLRToConsider):
         filling scheme of B1 
         bool_slotsB2: a boolean np.array that give the information about the position of the 
         filling scheme of B2
+        numberofLRToConsider : a number of LR to consider in every detector of the accellerator
         Dic1 : a dictionary that give the position of the detectors, seen from the point of view of B1, 
-        and also how many LR are considered in each detector
-        Dic2 : a dictionary that give the position of the detectors, seen from the point of view of B2,
-        and also how many LR are considered in each detector
+        and also how many LR are considered in each detector, set with the ones of LHC
+        n_slots : number of length of the accellerator, in this case is set as the number of harmonic RF of LHC divided by 10
+        Dict_nLRs : a dictionary that give the number of LR to consider in every detector of the dictionary Dict1, 
+        they must have the same length, is set as np.nan
     Returns:
         pd.DataFrame (df_B1): that give all the information described above about LR and HO, seen from
         a poinf of view of B1
@@ -658,9 +721,26 @@ def bbschedule(bool_slotsB1,bool_slotsB2, numberOfLRToConsider):
         a point of view of B2
 
     '''
+
+    assert np.isnan([numberOfLRToConsider,Dict_nLRs[random.choice(list(Dict_nLRs.keys()))]]).any(), "one between numberOfLRToConsider and Dict_nLRs should be NaN"
+    assert ~np.isnan([numberOfLRToConsider,Dict_nLRs[random.choice(list(Dict_nLRs.keys()))]]).all(), "one between numberOfLRToConsider and Dict_nLRs should be NaN"
+    keys = list(Dict1.keys())#
+    if np.isnan(Dict_nLRs[random.choice(list(Dict_nLRs.keys()))]):
+        Dic1 = {}
+        Dic2 = {}
+        for i in range(len(keys)):
+            Dic1[f'{keys[i]}'] = [Dict1[f'{keys[i]}'],numberOfLRToConsider]
+            Dic2[f'{keys[i]}'] = [np.mod(n_slots-Dict1[f'{keys[i]}'],n_slots),numberOfLRToConsider]
+    else:
+        keys_LR = list(Dict_nLRs.keys())
+        assert len(keys) == len(keys_LR), "Dict1 and Dict_nLRs must have the same lengths of keys"
+        Dic1 = {}
+        Dic2 = {}
+        for i in range(len(keys)):
+            Dic1[f'{keys[i]}'] = [Dict1[f'{keys[i]}'],Dict_nLRs[f'{keys_LR[i]}']]
+            Dic2[f'{keys[i]}'] = [np.mod(n_slots-Dict1[f'{keys[i]}'],n_slots),Dict_nLRs[f'{keys_LR[i]}']]
     
-    Dic1 = {'ATLAS/CMS':[0,numberOfLRToConsider],'LHCB':[2670,numberOfLRToConsider],'ALICE':[891,numberOfLRToConsider]}
-    Dic2 = {'ATLAS/CMS':[0,numberOfLRToConsider],'LHCB':[894,numberOfLRToConsider],'ALICE':[2673,numberOfLRToConsider]}
+    
     
     ones_B1 = np.where(bool_slotsB1)
     ones_B2 = np.where(bool_slotsB2)
