@@ -1,6 +1,7 @@
 import numpy as np 
 from . import dotdict
 import pandas as pd
+import random
 dotdict=dotdict.dotdict
 
 
@@ -691,7 +692,7 @@ def events_in_slots_vec(filling_scheme_to_be_rolled, filling_scheme, IPN_pos, n_
 
     t_pos = ~np.isnan(v1)
     v_pos = [v1_pos[ii][t_pos[ii]] for ii in np.arange(n_bunches)]
-    return v ,v_pos ,tot_LR
+    return v1 ,v1_pos ,tot_LR
 
 
 
