@@ -26,9 +26,11 @@ def computeBBMatrix(numberOfLRToConsider):
         4. B2 Bunch 0 meets B1 Bunch 0 in IP1 and 5.
         5. B2 Bunch 0 meets B1 Bunch 2673 in IP2.
         6. B2 Bunch 0 meets B1 Bunch 894 in IP8.
+
         === EXAMPLE 1 ===
         myMatrix=computeBBMatrix(numberOfLRToConsider=20)
         #in this case the total number of LR will be 160: 40 in IR1/5, 40 in IR2, and 40 in IR8.
+        
         === EXAMPLE 2 ===
         myMatrix=computeBBMatrix(numberOfLRToConsider=[20,15,16])
         #in this case the total number of LR will be 142: 40 in IR1/5, 30 in IR2, and 32 in IR8.
