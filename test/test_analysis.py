@@ -1,7 +1,6 @@
 
 import numpy as np
 import sys
-sys.path.append('fillingpattern/')
 import os
 print(os.getcwd())
 file_list = os.listdir()
@@ -9,7 +8,7 @@ file_list = os.listdir()
 # Print the list
 for item in file_list:
     print(item)
-from fillingpatterns import bbFunctions as bbF
+from .fillingpatterns import bbFunctions as bbF
 
 
 def test_bool0():
