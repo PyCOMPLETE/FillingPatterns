@@ -1,7 +1,6 @@
 ipython
 numpy
 pandas
-fillingpatterns
 matplotlib
 pyarrow
 pyyaml
