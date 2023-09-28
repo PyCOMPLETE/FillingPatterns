@@ -53,9 +53,9 @@ patt.b1.agap_length
 ```
 The example [000_json_to_csv_and_comparison.py](https://github.com/PyCOMPLETE/FillingPatterns/blob/master/examples/000_json_to_csv_and_comparison.py) illustrates their usage.
 
-To compute the beam-beam schedules for the two beams:
+To compute the beam-beam schedules for the two beams, using the previous algorithm:
 ```python
-patt.compute_beam_beam_schedule(n_lr_per_side=16, use_old_algorithm = 1)
+patt.compute_beam_beam_schedule(n_lr_per_side=16, previous_algorithm = 1)
 ```
 
 This attaches to the object two pandas dataframes with information on the beam-beam encounters
@@ -83,4 +83,10 @@ patt.b1.bb_schedule[ 'BB partners in LHCB']
 ```
 
 An example plotting some beam-beam properties is available at [001_from_csv_analyze_bb.py](https://github.com/PyCOMPLETE/FillingPatterns/blob/master/examples/001_from_csv_analyze_bb.py).
+
+
+It's possible to compute the same output using another algorithm, implemented now, faster than the previous one:
+```python
+patt.compute_beam_beam_schedule(n_lr_per_side=16, previous_algorithm = 0)
+```
 
