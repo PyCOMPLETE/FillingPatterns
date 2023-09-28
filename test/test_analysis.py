@@ -9,7 +9,7 @@ file_list = os.listdir()
 # Print the list
 for item in file_list:
     print(item)
-from fillingpatterns import bbFunctions as bbF
+import bbFunctions as bbF
 
 
 def test_bool0():
