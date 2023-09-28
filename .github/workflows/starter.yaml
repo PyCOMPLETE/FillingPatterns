@@ -25,7 +25,9 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Run test.py
-        run: python test/test_analysis.py
+        run: |
+          cd test
+          python test_analysis.py
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Auto-Commit-Action
