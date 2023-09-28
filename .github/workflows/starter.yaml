@@ -29,7 +29,7 @@ jobs:
           cd ..
           pip install ./FillingPatterns
           cd FillingPatterns
-          python ../test/test_analysis.py
+          python test/test_analysis.py
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Auto-Commit-Action
