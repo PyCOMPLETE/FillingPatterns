@@ -1,0 +1,12 @@
+ipython
+numpy
+pandas
+random
+matplotlib
+pyarrow
+pyyaml
+pytest
+cpymad
+pyabel
+PyNAFF
+opencv-contrib-python
