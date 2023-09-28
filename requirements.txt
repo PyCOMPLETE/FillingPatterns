@@ -1,7 +1,6 @@
 ipython
 numpy
 pandas
-random
 matplotlib
 pyarrow
 pyyaml
