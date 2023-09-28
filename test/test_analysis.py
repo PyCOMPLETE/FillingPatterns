@@ -1,7 +1,7 @@
 
 import numpy as np
 import sys
-sys.path.append('../')
+sys.path.append('../../')
 import os
 print(os.getcwd())
 file_list = os.listdir()
