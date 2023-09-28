@@ -3,7 +3,7 @@ import numpy as np
 import sys
 sys.path.append('../')
 import os
-os.getcwd()
+print(os.getcwd())
 from fillingpatterns import bbFunctions as bbF
 
 
