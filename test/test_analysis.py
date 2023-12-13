@@ -5,6 +5,7 @@ import os
 print(os.getcwd())
 file_list = os.listdir()
 
+
 # Print the list
 for item in file_list:
     print(item)
