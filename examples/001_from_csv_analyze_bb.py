@@ -1,14 +1,11 @@
-#%%
 import fillingpatterns as fp
 
-#fname = '25ns_2760b_2748_2492_2574_288bpi_13inj_800ns_bs200ns.csv'
-#fname = '25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_BCMS_5x48b.csv'
-fname = '8b4e_1972b_1960_1178_1886_224bpi_12inj_800ns_bs200ns.csv'
+fname = '25ns_2760b_2748_2492_2574_288bpi_13inj_800ns_bs200ns.csv'
+# fname = '25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_BCMS_5x48b.csv'
+# fname = '8b4e_1972b_1960_1178_1886_224bpi_12inj_800ns_bs200ns.csv'
 
 # Load filling pattern
-
-#patt1 = fp.FillingPattern.from_csv(fname)
-patt = fp.FillingPattern.from_json("1_bunch.json")
+patt = fp.FillingPattern.from_json(fname)
 # Compute bb schedule
 patt.compute_beam_beam_schedule(n_lr_per_side=16, use_old_algorithm = 0)
 
@@ -67,4 +64,3 @@ for ib, beam in zip([1, 2], [patt.b1, patt.b2]):
 
 plt.show()
 
-# %%
