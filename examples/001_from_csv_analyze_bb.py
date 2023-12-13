@@ -1,4 +1,3 @@
-#%%
 import fillingpatterns as fp
 
 fname = '25ns_2760b_2748_2492_2574_288bpi_13inj_800ns_bs200ns.csv'
