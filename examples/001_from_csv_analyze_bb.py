@@ -66,6 +66,3 @@ for ib, beam in zip([1, 2], [patt.b1, patt.b2]):
     fig1.savefig(fname.split('.csv')[0] + f"_{beam.beam_name.replace(' ', '')}_bb_summary.png", dpi=200)
 
 plt.show()
-
-
-# %%
