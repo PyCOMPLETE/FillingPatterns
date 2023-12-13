@@ -5,7 +5,7 @@ import numpy as np
 import fillingpatterns.mystyle as ms
 import fillingpatterns as fp
 
-#study_name = 'comparison_25ns'
+# study_name = 'comparison_25ns'
 #scheme_fnames = [
 #'25ns_2760b_2748_2495_2560_288bpi_14inj_800ns_bs200ns_STD.json',
 #'25ns_2844b_2832_2560_2631_288bpi_15inj_800ns_bs200ns_4x72_opt.json',
