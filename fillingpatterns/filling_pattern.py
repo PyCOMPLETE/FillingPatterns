@@ -84,9 +84,8 @@ class FillingPatternSingleBeam(object):
                         + np.sum(list(map(len, inj_patterns))) + agap_length
         inefficiency_perc = 100*(1 - float(needed_nslots) / float(ring_length_slots))
 
-        
-        self.actual_MKP_slots = None#min(gap_lengths)
-        self.actual_MKI_slots = None#min(gap_lengths[gap_lengths>min_MKP_slots])
+        self.actual_MKP_slots = min(gap_lengths)
+        self.actual_MKI_slots = min(gap_lengths[gap_lengths>min_MKP_slots])
 
         self.agap_length = agap_length
 
@@ -264,7 +263,7 @@ class FillingPattern(object):
 
     def compute_beam_beam_schedule(self, n_lr_per_side, previous_algorithm=0):
         from . import bbFunctions
-        assert previous_algorithm in [False,True], "use_old_algorithm should be True or False"
+        assert previous_algorithm in [False,True], "previous_algorithm should be True or False"
 
         print('Computing collision schedules...')
         if previous_algorithm == 1:

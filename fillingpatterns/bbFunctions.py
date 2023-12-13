@@ -4,7 +4,6 @@ import pandas as pd
 import random
 dotdict=dotdict.dotdict
 
-
 def computeBBMatrix(numberOfLRToConsider):
         """
         It returns a beam-beam matrix, that is a representation of the beam-beam encounters scheduled for a filled machine (3564 bunches).
@@ -31,7 +30,7 @@ def computeBBMatrix(numberOfLRToConsider):
         === EXAMPLE 1 ===
         myMatrix=computeBBMatrix(numberOfLRToConsider=20)
         #in this case the total number of LR will be 160: 40 in IR1/5, 40 in IR2, and 40 in IR8.
-        
+
         === EXAMPLE 2 ===
         myMatrix=computeBBMatrix(numberOfLRToConsider=[20,15,16])
         #in this case the total number of LR will be 142: 40 in IR1/5, 30 in IR2, and 32 in IR8.
