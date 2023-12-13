@@ -11,7 +11,6 @@ for item in file_list:
     print(item)
 from fillingpatterns import bbFunctions as bbF
 
-
 def test_bool0():
     [df_B1,df_B2] = bbF.bbschedule(np.zeros(3564),np.zeros(3564),20)
     assert df_B1.shape[0] == 0, "the data_frame_B1 should be empty"
