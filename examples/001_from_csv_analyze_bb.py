@@ -9,7 +9,7 @@ fname = '25ns_2760b_2748_2492_2574_288bpi_13inj_800ns_bs200ns.csv'
 patt = fp.FillingPattern.from_csv(fname)
 
 # Compute bb schedule
-patt.compute_beam_beam_schedule(n_lr_per_side=16, previous_algorithm = 0)
+patt.compute_beam_beam_schedule(n_lr_per_side=16, previous_algorithm = 1)
 
 #########
 # Plots #
