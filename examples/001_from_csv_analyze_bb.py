@@ -2,7 +2,7 @@ import fillingpatterns as fp
 
 fname = '25ns_2760b_2748_2492_2574_288bpi_13inj_800ns_bs200ns.csv'
 # fname = '25ns_2744b_2736_2246_2370_240bpi_13inj_800ns_bs200ns_BCMS_5x48b.csv'
-#fname = '8b4e_1972b_1960_1178_1886_224bpi_12inj_800ns_bs200ns.csv'
+# fname = '8b4e_1972b_1960_1178_1886_224bpi_12inj_800ns_bs200ns.csv'
 
 # Load filling pattern
 patt = fp.FillingPattern.from_csv(fname)
