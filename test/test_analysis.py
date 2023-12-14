@@ -1,4 +1,3 @@
-
 import numpy as np
 import sys
 import os
@@ -29,12 +28,13 @@ def test_bool2():
     assert np.array([~np.isnan(i) for i in df_B2['HO partner in ALICE']]).all(), "the data_frame_B2 should have all H-O collision in ALICE"
     assert np.array([~np.isnan(i) for i in df_B1['HO partner in LHCB']]).all(), "the data_frame_B1 should have all H-O collision in LHCB"
     assert np.array([~np.isnan(i) for i in df_B2['HO partner in LHCB']]).all(), "the data_frame_B2 should have all H-O collision in LHCB"
-    assert np.array([df_B1['BB partners in ATLAS/CMS'][i] == [(i-1)%3564,(i+1)%3564] for i in range(3564)]).all(), "the data_frame_B1 should have 2 LR for each bunch in ATLAS/CMS"
-    assert np.array([df_B2['BB partners in ATLAS/CMS'][i] == [(i-1)%3564,(i+1)%3564] for i in range(3564)]).all(), "the data_frame_B2 should have 2 LR for each bunch in ATLAS/CMS"
-    assert np.array([df_B1['BB partners in ALICE'][i] == [(i+891-1)%3564,(i+891+1)%3564] for i in range(3564)]).all(), "the data_frame_B1 should have 2 LR for each bunch in ALICE"
-    assert np.array([df_B2['BB partners in ALICE'][i] == [(i-891-1)%3564,(i-891+1)%3564] for i in range(3564)]).all(), "the data_frame_B2 should have 2 LR for each bunch in ALICE"
-    assert np.array([df_B1['BB partners in LHCB'][i] == [(i-894-1)%3564,(i-894+1)%3564] for i in range(3564)]).all(), "the data_frame_B1 should have 2 LR for each bunch in LHCB"
-    assert np.array([df_B2['BB partners in LHCB'][i] == [(i+894-1)%3564,(i+894+1)%3564] for i in range(3564)]).all(), "the data_frame_B2 should have 2 LR for each bunch in LHCB"
+    assert np.array([df_B1['BB partners in ATLAS/CMS'][i] == [(i-1)%3564,(i)%3564,(i+1)%3564] for i in range(3564)]).all(), "the data_frame_B1 should have 2 LR for each bunch in ATLAS/CMS"
+    assert np.array([df_B2['BB partners in ATLAS/CMS'][i] == [(i-1)%3564,(i)%3564,(i+1)%3564] for i in range(3564)]).all(), "the data_frame_B2 should have 2 LR for each bunch in ATLAS/CMS"
+    assert np.array([df_B1['BB partners in ALICE'][i] == [(i+891-1)%3564,(i+891)%3564,(i+891+1)%3564] for i in range(3564)]).all(), "the data_frame_B1 should have 2 LR for each bunch in ALICE"
+    assert np.array([df_B2['BB partners in ALICE'][i] == [(i-891-1)%3564,(i-891)%3564,(i-891+1)%3564] for i in range(3564)]).all(), "the data_frame_B2 should have 2 LR for each bunch in ALICE"
+    assert np.array([df_B1['BB partners in LHCB'][i] == [(i-894-1)%3564,(i-894)%3564,(i-894+1)%3564] for i in range(3564)]).all(), "the data_frame_B1 should have 2 LR for each bunch in LHCB"
+    assert np.array([df_B2['BB partners in LHCB'][i] == [(i+894-1)%3564,(i+894)%3564,(i+894+1)%3564] for i in range(3564)]).all(), "the data_frame_B2 should have 2 LR for each bunch in LHCB"
+
 
 
 
