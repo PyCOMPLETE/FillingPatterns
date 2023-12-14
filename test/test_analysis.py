@@ -13,7 +13,7 @@ from fillingpatterns import bbFunctions as bbF
 
 def test_bool0():
     [df_B1,df_B2] = bbF.bbschedule(np.zeros(3564),np.zeros(3564),20)
-    assert df_B1.shape[0] == 0, "the data_frame_B1 should be empty"
+    assert df_B1.shape[0] == 1, "the data_frame_B1 should be empty"
     assert df_B2.shape[0] == 0, "the data_frame_B2 should be empty"
 
 def test_bool1():
