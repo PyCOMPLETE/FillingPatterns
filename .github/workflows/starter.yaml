@@ -27,6 +27,9 @@ jobs:
           pip install pytest
       - name: Run tests
         run: |
+          cd ..
+          pip install ./FillingPatterns
+          cd FillingPatterns
           pytest
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
