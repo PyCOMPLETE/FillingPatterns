@@ -36,6 +36,5 @@ def test_bool2():
     assert np.array([df_B1['BB partners in LHCB'][i] == [(i-894-1)%3564,(i-894+1)%3564] for i in range(3564)]).all(), "the data_frame_B1 should have 2 LR for each bunch in LHCB"
     assert np.array([df_B2['BB partners in LHCB'][i] == [(i+894-1)%3564,(i+894+1)%3564] for i in range(3564)]).all(), "the data_frame_B2 should have 2 LR for each bunch in LHCB"
 
-test_bool0()
 
 
