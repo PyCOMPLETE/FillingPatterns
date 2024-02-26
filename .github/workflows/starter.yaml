@@ -1,0 +1,36 @@
+name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pwd
+          ls
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest
+      - name: Run tests
+        run: |
+          cd ..
+          pip install ./FillingPatterns
+          cd FillingPatterns
+          pytest
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Auto-Commit-Action
